@@ -16,7 +16,13 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
             update_option('_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
             update_option('_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
-            update_option('_edw_cache',sanitize_text_field( $_POST['_edw_cache'] ));
+            update_option('_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
+            update_option('_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+            if(isset($_POST['_edw_cache'])) {
+                update_option('_edw_cache', '1');
+            }else{
+                update_option('_edw_cache', '0');
+            }
         }
     }
 }
@@ -54,7 +60,7 @@ $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_but
                     </th>
                     <td>
                         <label>
-                        <input type="checkbox" value="1" name="_edw_cache" checked="<?php (get_option('_edw_cache', '0') == '1' ? 'checked' : '') ?>" /></label>
+                        <input type="checkbox" value="1" name="_edw_cache" <?= get_option('_edw_cache', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -72,6 +78,23 @@ $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_but
                     <td>
                         <label>
                         <input type="number" min="0" max="99999" name="_edw_max_days" value="<?=get_option('_edw_max_days', '0')?>" /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="number" min="0" max="99999" name="_edw_days_outstock" value="<?=get_post_meta($post->ID, '_edw_days_outstock', true)?>" /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Max Days for Delivery out of stock', 'edwoo')?>
+                    <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','edwoo')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="number" min="0" max="99999" name="_edw_max_days_outstock" value="<?=get_post_meta($post->ID, '_edw_max_days_outstock', true)?>" /></label>
                     </td>
                 </tr>
                 <tr valign="top">

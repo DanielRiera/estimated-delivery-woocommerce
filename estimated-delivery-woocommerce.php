@@ -41,6 +41,38 @@ if(!defined('EDWCore')) {
                 add_action( 'wp_footer', array($this, 'edw_show_js'), 99 );
             }
             add_action( 'wp_enqueue_scripts', array($this, 'edw_load_style') );
+            add_action('save_post_product', array($this, 'edw_save_product'), 10, 3);
+            add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
+
+        }
+        
+        function edw_create_metabox_products() {
+            add_meta_box( 'edw_data_product', __('Estimated Delivery', 'estimated-delivery-for-woocommerce'), array($this, 'edw_content_metabox_products'), 'product', 'normal', 'high' );  
+        }
+
+        function edw_content_metabox_products($post) {
+            require_once(EDW_PATH . 'views/metabox-product.php');     
+        }
+
+        function edw_save_product( $post_id, $post, $update ) {
+            if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
+                //Sanitize disabled days
+                $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
+                update_post_meta($post_id, '_edw_disabled_days', $disabledDays );
+            }else{
+                update_post_meta($post_id, '_edw_disabled_days', [] );
+            }
+            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+            update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
+            update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
+            update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+            
+            if(isset($_POST['_edw_overwrite'])) {
+                update_post_meta($post_id, '_edw_overwrite','1');
+            }else{
+                update_post_meta($post_id, '_edw_overwrite','0');
+            }
         }
 
         function edw_show_js() {
@@ -132,26 +164,50 @@ if(!defined('EDWCore')) {
         }
         function edw_show_message($productParam = false){
             global $product;
-            $mode = get_option('_edw_mode');
             $returnResult = false;
-            if(!$mode) {
-                return;
-            }
             if($productParam) {
                 $product = wc_get_product($productParam);
                 $returnResult = true;
+            }
+
+            $proudctActive = get_post_meta($product->get_id(), '_edw_overwrite', true);
+
+            if($proudctActive == '1') {
+                $mode = get_post_meta($product->get_id(),'_edw_mode', true);
+            }else{
+                $mode = get_option('_edw_mode');
+            }
+            
+            if(!$mode) {
+                return;
             }
             /**
              * Hide for out stock products
              * @since 1.0.3
              */
             if(!$product->is_in_stock() || $product->is_on_backorder()) {
-                return;
+                if($proudctActive == '1') {
+                    $days = intval(get_post_meta($product->get_id(),'_edw_days_outstock', true));
+                    $maxDays = intval(get_post_meta($product->get_id(),'_edw_max_days_outstock', true));
+                }else{
+                    $days = intval(get_option('_edw_days_outstock'));
+                    $maxDays = intval(get_option('_edw_max_days_outstock'));
+                }
+            }else{
+                //Check Product configuration
+
+                if($proudctActive == '1') {
+                    $days = intval(get_post_meta($product->get_id(),'_edw_days', true));
+                    $maxDays = intval(get_post_meta($product->get_id(),'_edw_max_days', true));
+                    $disabledDays = get_post_meta($product->get_id(),'_edw_disabled_days', true);
+                }else{
+                    $days = intval(get_option('_edw_days'));
+                    $maxDays = intval(get_option('_edw_max_days'));
+                    $disabledDays = get_option('_edw_disabled_days');
+                }
             }
-            
-            $days = intval(get_option('_edw_days'));
-            $maxDays = intval(get_option('_edw_max_days'));
-            $disabledDays = get_option('_edw_disabled_days');
+           
+        
             
             $minDate = $this->edw_get_date($disabledDays, $days);
             $maxDate = $this->edw_get_date($disabledDays, $maxDays);
