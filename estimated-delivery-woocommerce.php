@@ -7,6 +7,10 @@
  * Version: 1.1.0
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
+ * WC requires at least: 3.0
+ * WC tested up to: 5.2.2
+ * Required WP: 5.0
+ * Tested WP: 5.7.1
  */
 if(!defined('ABSPATH')) { exit; }
 

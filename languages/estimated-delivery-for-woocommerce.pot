@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-10-12 18:21+0200\n"
+"POT-Creation-Date: 2021-04-17 12:34+0200\n"
 "PO-Revision-Date: 2019-08-28 20:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,132 +16,153 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: estimated-delivery-woocommerce.php:30
+#: estimated-delivery-woocommerce.php:54 estimated-delivery-woocommerce.php:103
 msgid "Estimated Delivery"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:36
+#: estimated-delivery-woocommerce.php:109
 msgid "After cart button"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:37
+#: estimated-delivery-woocommerce.php:110
 msgid "Before cart button"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:38
+#: estimated-delivery-woocommerce.php:111
 msgid "After product meta"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:39
+#: estimated-delivery-woocommerce.php:112
 msgid "Before product summary"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:40
+#: estimated-delivery-woocommerce.php:113
 msgid "After product summary"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:41
+#: estimated-delivery-woocommerce.php:114
 msgid "Product Thumbnail (may not work)"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:129
+#: estimated-delivery-woocommerce.php:248
 #, php-format
 msgid "Estimated delivery on %s"
 msgstr ""
 
-#: estimated-delivery-woocommerce.php:131
+#: estimated-delivery-woocommerce.php:250
 #, php-format
 msgid "Guaranteed delivery on %s"
 msgstr ""
 
-#: views/options.php:24
-msgid "Estimated Delivery for Woocommerce"
+#: views/metabox-product.php:9
+msgid "Overwrite general settings"
 msgstr ""
 
-#: views/options.php:25
-msgid "Show the estimated or guaranteed delivery for the product"
-msgstr ""
-
-#: views/options.php:33
-msgid "You buy me a coffe? Click here"
-msgstr ""
-
-#: views/options.php:49
+#: views/metabox-product.php:17 views/options.php:67
 msgid "Days for Delivery"
 msgstr ""
 
-#: views/options.php:57
+#: views/metabox-product.php:25 views/options.php:75
 msgid "Max Days for Delivery"
 msgstr ""
 
-#: views/options.php:58
+#: views/metabox-product.php:26 views/metabox-product.php:43
+#: views/options.php:76 views/options.php:93
 msgid "Set 0 for disable. If this set more than 0 days, it will show a range."
 msgstr ""
 
-#: views/options.php:66
+#: views/metabox-product.php:34 views/options.php:84
+msgid "Days for Delivery out of stock"
+msgstr ""
+
+#: views/metabox-product.php:42 views/options.php:92
+msgid "Max Days for Delivery out of stock"
+msgstr ""
+
+#: views/metabox-product.php:51 views/options.php:101
 msgid "Estimated or Guaranteed"
 msgstr ""
 
-#: views/options.php:67
+#: views/metabox-product.php:52 views/options.php:102
 msgid "The message will change."
 msgstr ""
 
-#: views/options.php:72
+#: views/metabox-product.php:57 views/options.php:107
 msgid "Estimated"
 msgstr ""
 
-#: views/options.php:73
+#: views/metabox-product.php:58 views/options.php:108
 msgid "Guaranteed"
 msgstr ""
 
-#: views/options.php:79
+#: views/metabox-product.php:64 views/options.php:114
 msgid "Days disabled"
 msgstr ""
 
-#: views/options.php:80
+#: views/metabox-product.php:65 views/options.php:115
 msgid "Select the days that NO shipments are made."
 msgstr ""
 
-#: views/options.php:85
+#: views/metabox-product.php:70 views/options.php:120
 msgid "Monday"
 msgstr ""
 
-#: views/options.php:90
+#: views/metabox-product.php:75 views/options.php:125
 msgid "Tuesday"
 msgstr ""
 
-#: views/options.php:95
+#: views/metabox-product.php:80 views/options.php:130
 msgid "Wednesday"
 msgstr ""
 
-#: views/options.php:100
+#: views/metabox-product.php:85 views/options.php:135
 msgid "Thursday"
 msgstr ""
 
-#: views/options.php:105
+#: views/metabox-product.php:90 views/options.php:140
 msgid "Friday"
 msgstr ""
 
-#: views/options.php:110
+#: views/metabox-product.php:95 views/options.php:145
 msgid "Saturday"
 msgstr ""
 
-#: views/options.php:115
+#: views/metabox-product.php:100 views/options.php:150
 msgid "Sunday"
 msgstr ""
 
-#: views/options.php:120
+#: views/options.php:33
+msgid "Estimated Delivery for Woocommerce"
+msgstr ""
+
+#: views/options.php:34
+msgid "Show the estimated or guaranteed delivery for the product"
+msgstr ""
+
+#: views/options.php:42
+msgid "You buy me a coffe? Click here"
+msgstr ""
+
+#: views/options.php:58
+msgid "Use AJAX"
+msgstr ""
+
+#: views/options.php:59
+msgid "If your site use cache system, active this option."
+msgstr ""
+
+#: views/options.php:155
 msgid "Position"
 msgstr ""
 
-#: views/options.php:134
+#: views/options.php:169
 msgid "Save"
 msgstr ""
 
-#: views/options.php:136
+#: views/options.php:171
 msgid "Need style?"
 msgstr ""
 
-#: views/options.php:137
+#: views/options.php:172
 msgid "Enjoy! Paste this CSS code into your Customizer and edit as you like"
 msgstr ""

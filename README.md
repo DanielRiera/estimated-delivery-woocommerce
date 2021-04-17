@@ -2,9 +2,9 @@
 Contributors: taxarpro, danielriera
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
-Tested up to: 5.7
+Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.0.4
+Stable tag: 1.1.0
  
 == Description ==
 
@@ -37,6 +37,13 @@ Comming soon --->
 
  
 == Changelog ==
+
+= 1.1.0 =
+* Add support for cache (AJAX Option)
+* Change days for each product
+* OUT OF STOCK: Support of variations (The date change on change variation)
+* Customize the mode (Estimated or guaranteed) for each product
+* Add support days each product and general options for product out of stock
 
 = 1.0.4 =
 * Fix PHP Error
