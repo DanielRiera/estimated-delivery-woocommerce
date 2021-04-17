@@ -9,11 +9,14 @@ if(isset($_POST['action'])) {
                 //Sanitize disabled days
                 $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
                 update_option('_edw_disabled_days', $disabledDays );
+            }else{
+                update_option('_edw_disabled_days', [] );
             }
             update_option('_edw_position',sanitize_text_field( $_POST['_edw_position'] ));
             update_option('_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
             update_option('_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
             update_option('_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
+            update_option('_edw_cache',sanitize_text_field( $_POST['_edw_cache'] ));
         }
     }
 }
@@ -45,6 +48,15 @@ $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_but
             <input type="hidden" name="action" value="save_options" />
             <?php wp_nonce_field( 'edw_nonce', 'save_option_nonce' ); ?>
             <table class="form-table">
+                <tr valign="top">
+                    <th scope="row"><?=__('Use AJAX', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('If your site use cache system, active this option.','edwoo')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" value="1" name="_edw_cache" checked="<?php (get_option('_edw_cache', '0') == '1' ? 'checked' : '') ?>" /></label>
+                    </td>
+                </tr>
                 <tr valign="top">
                     <th scope="row"><?=__('Days for Delivery', 'estimated-delivery-for-woocommerce')?>
                     </th>
