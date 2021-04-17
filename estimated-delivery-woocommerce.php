@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: TaxarPro
  * Author URI: https://taxarpro.com
- * Version: 1.0.4
+ * Version: 1.1.0
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  */
