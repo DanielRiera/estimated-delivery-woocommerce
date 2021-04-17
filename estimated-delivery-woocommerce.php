@@ -41,6 +41,38 @@ if(!defined('EDWCore')) {
                 add_action( 'wp_footer', array($this, 'edw_show_js'), 99 );
             }
             add_action( 'wp_enqueue_scripts', array($this, 'edw_load_style') );
+            add_action('save_post_product', array($this, 'edw_save_product'), 10, 3);
+            add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
+
+        }
+        
+        function edw_create_metabox_products() {
+            add_meta_box( 'edw_data_product', __('Estimated Delivery', 'estimated-delivery-for-woocommerce'), array($this, 'edw_content_metabox_products'), 'product', 'normal', 'high' );  
+        }
+
+        function edw_content_metabox_products($post) {
+            require_once(EDW_PATH . 'views/metabox-product.php');     
+        }
+
+        function edw_save_product( $post_id, $post, $update ) {
+            if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
+                //Sanitize disabled days
+                $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
+                update_post_meta($post_id, '_edw_disabled_days', $disabledDays );
+            }else{
+                update_post_meta($post_id, '_edw_disabled_days', [] );
+            }
+            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+            update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
+            update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
+            update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+            
+            if(isset($_POST['_edw_overwrite'])) {
+                update_post_meta($post_id, '_edw_overwrite','1');
+            }else{
+                update_post_meta($post_id, '_edw_overwrite','0');
+            }
         }
 
         function edw_show_js() {
@@ -53,9 +85,7 @@ if(!defined('EDWCore')) {
 
         function edw_load_style() {
             if(is_product() === false) { return; }
-            if(EDW_USE_JS == '1') {
-                wp_enqueue_script( 'edw-scripts', plugins_url('assets/edw_scripts.js?edw=true&v='.EDW_Version, __FILE__), array('jquery'));
-            }
+            wp_enqueue_script( 'edw-scripts', plugins_url('assets/edw_scripts.js?edw=true&v='.EDW_Version, __FILE__), array('jquery'));
 
             wp_localize_script( 'edw-scripts', 'edwConfig', array(
                 'url'    => admin_url( 'admin-ajax.php' )
@@ -132,26 +162,58 @@ if(!defined('EDWCore')) {
         }
         function edw_show_message($productParam = false){
             global $product;
-            $mode = get_option('_edw_mode');
             $returnResult = false;
-            if(!$mode) {
-                return;
-            }
             if($productParam) {
                 $product = wc_get_product($productParam);
                 $returnResult = true;
+            }
+            if(isset($_POST['type']) and $_POST['type'] == 'variation') {
+                $product_id = $product->get_parent_id();
+            }else{
+                $product_id = $product->get_id();
+            }
+            $productActive = get_post_meta($product_id, '_edw_overwrite', true);
+            if($productActive == '1') {
+                $mode = get_post_meta($product_id,'_edw_mode', true);
+            }else{
+                $mode = get_option('_edw_mode');
+            }
+            
+            if(!$mode) {
+                return;
             }
             /**
              * Hide for out stock products
              * @since 1.0.3
              */
-            if(!$product->is_in_stock() || $product->is_on_backorder()) {
-                return;
-            }
             
-            $days = intval(get_option('_edw_days'));
-            $maxDays = intval(get_option('_edw_max_days'));
-            $disabledDays = get_option('_edw_disabled_days');
+            if(!$product->is_in_stock() || $product->is_on_backorder()) {
+                if($productActive == '1') {
+                    $days = intval(get_post_meta($product_id,'_edw_days_outstock', true));
+                    $maxDays = intval(get_post_meta($product_id,'_edw_max_days_outstock', true));
+                    $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
+                }else{
+                    $maxDays = intval(get_option('_edw_max_days_outstock'));
+                    $days = intval(get_option('_edw_days_outstock'));
+                    $disabledDays = get_option('_edw_disabled_days');
+                    
+                }
+
+            }else{
+                //Check Product configuration
+
+                if($productActive == '1') {
+                    $days = intval(get_post_meta($product_id,'_edw_days', true));
+                    $maxDays = intval(get_post_meta($product_id,'_edw_max_days', true));
+                    $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
+                }else{
+                    $days = intval(get_option('_edw_days'));
+                    $maxDays = intval(get_option('_edw_max_days'));
+                    $disabledDays = get_option('_edw_disabled_days');
+                }
+            }
+           
+        
             
             $minDate = $this->edw_get_date($disabledDays, $days);
             $maxDate = $this->edw_get_date($disabledDays, $maxDays);

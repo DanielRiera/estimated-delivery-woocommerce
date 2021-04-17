@@ -9,6 +9,11 @@ if( !class_exists( 'EDW_API' ) ) {
         function edw_get_estimate_dates() {
             global $EDWCore;
             $product = sanitize_text_field( $_POST['product'] );
+
+            // if($_POST['type'] == 'variation') {
+            //     $variation = wc_get_product($variation_id);
+            //     $product = $variation->get_parent_id();
+            // }
             $string = $EDWCore->edw_show_message($product);
             if(!$string) {
                 $res = array();
