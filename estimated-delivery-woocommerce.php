@@ -12,17 +12,56 @@ if(!defined('ABSPATH')) { exit; }
 
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
+define('EDW_USE_JS', get_option('_edw_cache', '0'));
+define('EDW_Version', '1.1.0');
+
+require_once EDW_PATH . 'class.api.php';
 
 if(!defined('EDWCore')) {
     class EDWCore {
 
         static public $positions = array();
 
+        public $positionsClass = array(
+            'woocommerce_after_add_to_cart_button' => 'form.cart|inside',
+            'woocommerce_before_add_to_cart_button' => 'form.cart|before',
+            'woocommerce_product_meta_end' => 'div.product_meta|after',
+            'woocommerce_before_single_product_summary' => 'div.woocommerce-notices-wrapper|after',
+            'woocommerce_after_single_product_summary' => 'div.woocommerce-tabs|after',
+            'woocommerce_product_thumbnails' => 'div.woocommerce-product-gallery|inside',
+        );
+
         function __construct(){
             add_action('admin_menu', array($this, 'edw_menu'));
             add_action('plugins_loaded', array($this, 'edw_load_textdomain'));
-            add_action(EDW_POSITION_SHOW, array($this, 'edw_show_message'));
+            
+            if(EDW_USE_JS == '0') {
+                add_action(EDW_POSITION_SHOW, array($this, 'edw_show_message'));
+            }else{
+                add_action( 'wp_footer', array($this, 'edw_show_js'), 99 );
+            }
+            add_action( 'wp_enqueue_scripts', array($this, 'edw_load_style') );
         }
+
+        function edw_show_js() {
+            if(is_product() === true) {
+                global $post;
+                $selectPosition = explode('|', $this->positionsClass[EDW_POSITION_SHOW]);
+                echo '<script>jQuery(document).ready(function($) { EDW.show('.$post->ID.',\''.json_encode($selectPosition).'\'); });</script>';
+            }
+        }
+
+        function edw_load_style() {
+            if(is_product() === false) { return; }
+            if(EDW_USE_JS == '1') {
+                wp_enqueue_script( 'edw-scripts', plugins_url('assets/edw_scripts.js?edw=true&v='.EDW_Version, __FILE__), array('jquery'));
+            }
+
+            wp_localize_script( 'edw-scripts', 'edwConfig', array(
+                'url'    => admin_url( 'admin-ajax.php' )
+            ) );
+        }
+
         function edw_load_textdomain(){
             load_plugin_textdomain( 'estimated-delivery-for-woocommerce', false, basename( dirname( __FILE__ ) ) . '/languages' );
         }
@@ -47,6 +86,9 @@ if(!defined('EDWCore')) {
         }
 
         private function edw_get_date($disabledDays, $daysEstimated, $dateCheck = false){
+            if(count($disabledDays) == 7) {
+                return false;
+            }
             if(!$dateCheck) {
                 $dateCheck = date('Y-m-d', strtotime(" + " . $daysEstimated . " days"));
             }else{
@@ -88,14 +130,17 @@ if(!defined('EDWCore')) {
             return [$day, $month, $year];
 
         }
-        function edw_show_message(){
+        function edw_show_message($productParam = false){
             global $product;
             $mode = get_option('_edw_mode');
-
+            $returnResult = false;
             if(!$mode) {
                 return;
             }
-
+            if($productParam) {
+                $product = wc_get_product($productParam);
+                $returnResult = true;
+            }
             /**
              * Hide for out stock products
              * @since 1.0.3
@@ -107,38 +152,47 @@ if(!defined('EDWCore')) {
             $days = intval(get_option('_edw_days'));
             $maxDays = intval(get_option('_edw_max_days'));
             $disabledDays = get_option('_edw_disabled_days');
-
-
+            
             $minDate = $this->edw_get_date($disabledDays, $days);
             $maxDate = $this->edw_get_date($disabledDays, $maxDays);
-
-            $date_format = get_option('date_format');
-            $date = date_i18n("{$date_format}", strtotime($minDate));
-            if($maxDays > 0) {
-                list($d, $m, $y) = $this->checkDates($minDate, $maxDate);
-
-                if(!$d && !$m && !$y) {
-                    $date = $date;
-                }else{
-                    if($d && !$m && !$y) {
-                        //00 - 00 MM, YYYY
-                        $date = date_i18n("j ", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
-                    }elseif($d && $m && !$y) {
-                        // 00 MM - 00 MM, YYYY
-                        $date = date_i18n("j F", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
+            if($minDate && $maxDate) {
+                $date_format = get_option('date_format');
+                $date = date_i18n("{$date_format}", strtotime($minDate));
+                if($maxDays > 0) {
+                    list($d, $m, $y) = $this->checkDates($minDate, $maxDate);
+    
+                    if(!$d && !$m && !$y) {
+                        $date = $date;
                     }else{
-                        // 00 MM YYYY - 00 MM YYYY
-                        $date = date_i18n("j F Y", strtotime($minDate)) . ' - ' . date_i18n("j F Y", strtotime($maxDate));
+                        if($d && !$m && !$y) {
+                            //00 - 00 MM, YYYY
+                            $date = date_i18n("j ", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
+                        }elseif($d && $m && !$y) {
+                            // 00 MM - 00 MM, YYYY
+                            $date = date_i18n("j F", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
+                        }else{
+                            // 00 MM YYYY - 00 MM YYYY
+                            $date = date_i18n("j F Y", strtotime($minDate)) . ' - ' . date_i18n("j F Y", strtotime($maxDate));
+                        }
+                        
                     }
-                    
                 }
+    
+                if($mode == "1") {
+                    $string = '<div class="edw_date">'.sprintf(__('Estimated delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
+                }else{
+                    $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
+                }
+    
+                if($returnResult) {
+                    return $string;
+                }
+    
+                echo $string;
             }
 
-            if($mode == "1") {
-                echo '<div class="edw_date">'.sprintf(__('Estimated delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
-            }else{
-                echo '<div class="edw_date">'.sprintf(__('Guaranteed delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
-            }
+            return '';
+
         }
     }
 
