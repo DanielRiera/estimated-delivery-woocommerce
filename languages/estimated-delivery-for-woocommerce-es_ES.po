@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: edwoo\n"
-"POT-Creation-Date: 2021-04-17 12:34+0200\n"
-"PO-Revision-Date: 2021-04-17 12:35+0200\n"
+"POT-Creation-Date: 2021-05-04 20:34+0200\n"
+"PO-Revision-Date: 2021-05-04 20:35+0200\n"
 "Last-Translator: Daniel Riera <daniel@taxapro.com>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -15,40 +15,44 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: estimated-delivery-woocommerce.php:54 estimated-delivery-woocommerce.php:103
+#: estimated-delivery-woocommerce.php:69 estimated-delivery-woocommerce.php:118
 msgid "Estimated Delivery"
 msgstr "Entrega Estimada"
 
-#: estimated-delivery-woocommerce.php:109
+#: estimated-delivery-woocommerce.php:124
+msgid "Disabled, use shortcode"
+msgstr "Deshabilitar, usaré shortcode"
+
+#: estimated-delivery-woocommerce.php:125
 msgid "After cart button"
 msgstr "Después del botón de añadir al carrito"
 
-#: estimated-delivery-woocommerce.php:110
+#: estimated-delivery-woocommerce.php:126
 msgid "Before cart button"
 msgstr "Antes del botón de añadir al carrito"
 
-#: estimated-delivery-woocommerce.php:111
+#: estimated-delivery-woocommerce.php:127
 msgid "After product meta"
 msgstr "Después de la meta del producto"
 
-#: estimated-delivery-woocommerce.php:112
+#: estimated-delivery-woocommerce.php:128
 msgid "Before product summary"
 msgstr "Antes del resumen del producto"
 
-#: estimated-delivery-woocommerce.php:113
+#: estimated-delivery-woocommerce.php:129
 msgid "After product summary"
 msgstr "Después del resumen del producto"
 
-#: estimated-delivery-woocommerce.php:114
+#: estimated-delivery-woocommerce.php:130
 msgid "Product Thumbnail (may not work)"
 msgstr "Debajo de la galería (Puede no funcionar)"
 
-#: estimated-delivery-woocommerce.php:248
+#: estimated-delivery-woocommerce.php:264
 #, php-format
 msgid "Estimated delivery on %s"
 msgstr "Entrega estimada el %s"
 
-#: estimated-delivery-woocommerce.php:250
+#: estimated-delivery-woocommerce.php:266
 #, php-format
 msgid "Guaranteed delivery on %s"
 msgstr "Entrega Garantizada el %s"

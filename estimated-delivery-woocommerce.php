@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: TaxarPro
  * Author URI: https://taxarpro.com
- * Version: 1.1.0
+ * Version: 1.1.1
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.1.0');
+define('EDW_Version', '1.1.1');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -27,6 +27,7 @@ if(!defined('EDWCore')) {
         static public $positions = array();
 
         public $positionsClass = array(
+            'disabled' => 'none',
             'woocommerce_after_add_to_cart_button' => 'form.cart|inside',
             'woocommerce_before_add_to_cart_button' => 'form.cart|before',
             'woocommerce_product_meta_end' => 'div.product_meta|after',
@@ -47,7 +48,21 @@ if(!defined('EDWCore')) {
             add_action( 'wp_enqueue_scripts', array($this, 'edw_load_style') );
             add_action('save_post_product', array($this, 'edw_save_product'), 10, 3);
             add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
+            add_action( 'init', array($this, 'edw_add_shortcode'));
+        }
 
+        function edw_add_shortcode() {
+            add_shortcode( 'estimate_delivery', array($this, 'edw_prepare_shortcode') );
+        }
+
+        function edw_prepare_shortcode($atts) {
+            global $product;
+
+            $atts = shortcode_atts( array(
+                'product' => $product,                
+            ), $atts, 'estimate_delivery' );
+
+            return $this->edw_show_message($product);
         }
         
         function edw_create_metabox_products() {
@@ -106,12 +121,13 @@ if(!defined('EDWCore')) {
         function edw_view_page_options() {
 
             self::$positions = array(
-                'woocommerce_after_add_to_cart_button' => __('After cart button','counter-visitor-for-woocommerce'),
-                'woocommerce_before_add_to_cart_button' => __('Before cart button','counter-visitor-for-woocommerce'),
-                'woocommerce_product_meta_end' => __('After product meta','counter-visitor-for-woocommerce'),
-                'woocommerce_before_single_product_summary' => __('Before product summary','counter-visitor-for-woocommerce'),
-                'woocommerce_after_single_product_summary' => __('After product summary','counter-visitor-for-woocommerce'),
-                'woocommerce_product_thumbnails' => __('Product Thumbnail (may not work)','counter-visitor-for-woocommerce'),
+                'disabled' => __('Disabled, use shortcode','estimated-delivery-for-woocommerce'),
+                'woocommerce_after_add_to_cart_button' => __('After cart button','estimated-delivery-for-woocommerce'),
+                'woocommerce_before_add_to_cart_button' => __('Before cart button','estimated-delivery-for-woocommerce'),
+                'woocommerce_product_meta_end' => __('After product meta','estimated-delivery-for-woocommerce'),
+                'woocommerce_before_single_product_summary' => __('Before product summary','estimated-delivery-for-woocommerce'),
+                'woocommerce_after_single_product_summary' => __('After product summary','estimated-delivery-for-woocommerce'),
+                'woocommerce_product_thumbnails' => __('Product Thumbnail (may not work)','estimated-delivery-for-woocommerce'),
             );
 
             self::$positions = apply_filters( 'edw_positions', self::$positions );

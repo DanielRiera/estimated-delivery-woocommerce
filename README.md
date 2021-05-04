@@ -4,18 +4,22 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
  
 == Description ==
 
 Shows the estimated or guaranteed delivery date on each product, select the days on which deliveries are not made.
 
+```[estimate_delivery]``` shortcode available from 1.1.1 version.
+
+From 1.1.0 version
+Customize the mode (Estimated or guaranteed) for each product
+Customize the shipping days for each product
+
 Do you need more options?
 
 Buy the PRO version and you will have access to:
 
-* Customize the mode (Estimated or guaranteed) for each product
-* Customize the shipping days for each product
 * Customize the shipping days for each shipping class
 * You can add the shipping date to the orders for each product
 * Change the message shown on each product
@@ -37,6 +41,9 @@ Comming soon --->
 
  
 == Changelog ==
+
+= 1.1.1 =
+* Add Shortcode ```[estimate_delivery]```
 
 = 1.1.0 =
 * Add support for cache (AJAX Option)
