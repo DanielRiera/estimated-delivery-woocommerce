@@ -4,7 +4,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
  
 == Description ==
 
@@ -41,6 +41,10 @@ Comming soon --->
 
  
 == Changelog ==
+
+= 1.1.2 =
+* Update Readme Only
+* Fix #3 Product NULL on Elementor
 
 = 1.1.1 =
 * Add Shortcode ```[estimate_delivery]```
