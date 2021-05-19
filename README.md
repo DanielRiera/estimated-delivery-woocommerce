@@ -10,7 +10,7 @@ Stable tag: 1.1.3
 
 Shows the estimated or guaranteed delivery date on each product, select the days on which deliveries are not made.
 
-```[estimate_delivery]``` shortcode available from 1.1.1 version.
+``[estimate_delivery]`` shortcode available from 1.1.1 version.
 
 From 1.1.0 version
 Customize the mode (Estimated or guaranteed) for each product
