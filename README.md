@@ -4,7 +4,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.1.2
+Stable tag: 1.1.3
  
 == Description ==
 
@@ -42,7 +42,7 @@ Comming soon --->
  
 == Changelog ==
 
-= 1.1.2 =
+= 1.1.3 =
 * Update Readme Only
 * Fix #3 Product NULL on Elementor
 
