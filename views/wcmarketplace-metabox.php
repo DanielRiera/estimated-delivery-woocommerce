@@ -17,8 +17,8 @@ if($disabledDays == "") { $disabledDays = []; }
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?=__('Max Days for Delivery', 'edwoo')?>
-                <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','edwoo')?></p>
+                <th scope="row"><?=__('Max Days for Delivery', 'estimated-delivery-for-woocommerce')?>
+                <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
                 </th>
                 <td>
                     <label>
@@ -34,8 +34,8 @@ if($disabledDays == "") { $disabledDays = []; }
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?=__('Max Days for Delivery out of stock', 'edwoo')?>
-                <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','edwoo')?></p>
+                <th scope="row"><?=__('Max Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
+                <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
                 </th>
                 <td>
                     <label>
