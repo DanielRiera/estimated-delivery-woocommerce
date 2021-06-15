@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 global $post;
-$disabledDays = get_post_meta($post->ID,'_edw_disabled_days', []);
+$disabledDays = get_post_meta($post->ID,'_edw_disabled_days', true);
 echo '<table class="form-table">';
 
 ?>
