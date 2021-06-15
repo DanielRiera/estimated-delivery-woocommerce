@@ -300,12 +300,21 @@ if(!defined('EDWCore')) {
 
             if($minDate && $maxDate) {
                 $date_format = get_option('date_format');
+                $useRelativeDates = get_option('_edw_relative_dates', false);
+                $elon = __(" on", "estimated-delivery-for-woocommerce");
                 $date = date_i18n("{$date_format}", strtotime($minDate));
                 if($maxDays > 0) {
                     list($d, $m, $y) = $this->checkDates($minDate, $maxDate);
     
                     if(!$d && !$m && !$y) {
-                        $date = $date;
+                        $thisWeek = date('W');
+                        if( $useRelativeDates && $thisWeek == date('W', strtotime($minDate)) ) {
+                            $elon = "";
+                            $date = sprintf( __("this %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
+                        }elseif( $useRelativeDates && ($thisWeek+1) == date('W', strtotime($minDate)) ) {
+                            $elon = "";
+                            $date = sprintf( __("the next %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
+                        }
                     }else{
                         if($d && !$m && !$y) {
                             //00 - 00 MM, YYYY
@@ -317,16 +326,24 @@ if(!defined('EDWCore')) {
                             // 00 MM YYYY - 00 MM YYYY
                             $date = date_i18n("j F Y", strtotime($minDate)) . ' - ' . date_i18n("j F Y", strtotime($maxDate));
                         }
-                        
                     }
                 }else{
-                    $date = $date;
+                    $thisWeek = date('W');
+                    if( $useRelativeDates &&  $thisWeek == date('W', strtotime($minDate)) ) {
+                        $elon = "";
+                        $date = sprintf( __("this %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
+                    }elseif( $useRelativeDates && ($thisWeek+1) == date('W', strtotime($minDate)) ) {
+                        $elon = "";
+                        $date = sprintf( __("the next %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
+                    }
                 }
-    
+                
+               
+
                 if($mode == "1") {
-                    $string = '<div class="edw_date">'.sprintf(__('Estimated delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
+                    $string = '<div class="edw_date">'.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }else{
-                    $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery on %s','estimated-delivery-for-woocommerce'), $date).'</div>';
+                    $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }
     
                 if($returnResult) {
