@@ -86,6 +86,7 @@ if(!defined('EDWCore')) {
             update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
             update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
             update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+            update_post_meta($post_id, '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
             
             if(isset($_POST['_edw_overwrite'])) {
                 update_post_meta($post_id, '_edw_overwrite','1');
@@ -189,19 +190,23 @@ if(!defined('EDWCore')) {
             }
             
             if($product == NULL) {
+               
                 return '';   
             }
+            
             if(isset($_POST['type']) and $_POST['type'] == 'variation') {
                 $product_id = $product->get_parent_id();
             }else{
                 $product_id = $product->get_id();
             }
             $productActive = get_post_meta($product_id, '_edw_overwrite', true);
+            
             if($productActive == '1') {
                 $mode = get_post_meta($product_id,'_edw_mode', true);
             }else{
                 $mode = get_option('_edw_mode');
             }
+            
             
             if(!$mode) {
                 return;
@@ -230,17 +235,22 @@ if(!defined('EDWCore')) {
                     $days = intval(get_post_meta($product_id,'_edw_days', true));
                     $maxDays = intval(get_post_meta($product_id,'_edw_max_days', true));
                     $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
+                    
                 }else{
                     $days = intval(get_option('_edw_days'));
                     $maxDays = intval(get_option('_edw_max_days'));
                     $disabledDays = get_option('_edw_disabled_days');
                 }
+
             }
            
         
             
             $minDate = $this->edw_get_date($disabledDays, $days);
             $maxDate = $this->edw_get_date($disabledDays, $maxDays);
+
+            
+
             if($minDate && $maxDate) {
                 $date_format = get_option('date_format');
                 $date = date_i18n("{$date_format}", strtotime($minDate));
@@ -262,6 +272,8 @@ if(!defined('EDWCore')) {
                         }
                         
                     }
+                }else{
+                    $date = $date;
                 }
     
                 if($mode == "1") {
