@@ -49,7 +49,52 @@ if(!defined('EDWCore')) {
             add_action('save_post_product', array($this, 'edw_save_product'), 10, 3);
             add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
             add_action( 'init', array($this, 'edw_add_shortcode'));
+
+            //WCMP Compatiblity
+            add_filter( 'wcmp_product_data_tabs', array($this, 'edw_wcmp_compatibility_filter_tabs') );
+            add_action( 'wcmp_product_tabs_content', array($this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
+            add_action( 'wcmp_process_product_object', array($this, 'edw_save_product_data'), 10, 2 );
         }
+
+        function edw_wcmp_compatibility_filter_tabs($tabs) {
+            $tabs['edw_estimate_delivery'] = array(
+                'label'    => __('Estimated Delivery', 'estimated-delivery-for-woocommerce'),
+                'target'   => 'edw_estimate_delivery',
+                'class'    => array(),
+                'priority' => 100,
+            );
+            return $tabs;
+        }
+
+        function edw_wcmp_compatibility_content_tab( $pro_class_obj, $product, $post ) {
+            $GLOBALS["product"] = $product;
+            require_once(EDW_PATH . 'views/wcmarketplace-metabox.php');     
+        }
+
+        function edw_save_product_data( $product, $post_data ) {
+            if(isset($_POST['_edw_max_days'])) {
+                if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
+                    //Sanitize disabled days
+                    $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
+                    update_post_meta($post_data['post_ID'], '_edw_disabled_days', $disabledDays );
+                }else{
+                    update_post_meta($post_data['post_ID'], '_edw_disabled_days', [] );
+                }
+                update_post_meta($post_data['post_ID'], '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+                update_post_meta($post_data['post_ID'], '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+                update_post_meta($post_data['post_ID'], '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
+                update_post_meta($post_data['post_ID'], '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
+                update_post_meta($post_data['post_ID'], '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+                update_post_meta($post_data['post_ID'], '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
+                
+                if(isset($_POST['_edw_overwrite'])) {
+                    update_post_meta($post_data['post_ID'], '_edw_overwrite','1');
+                }else{
+                    update_post_meta($post_data['post_ID'], '_edw_overwrite','0');
+                }
+            }
+         }
+
 
         function edw_add_shortcode() {
             add_shortcode( 'estimate_delivery', array($this, 'edw_prepare_shortcode') );
@@ -74,24 +119,26 @@ if(!defined('EDWCore')) {
         }
 
         function edw_save_product( $post_id, $post, $update ) {
-            if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
-                //Sanitize disabled days
-                $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
-                update_post_meta($post_id, '_edw_disabled_days', $disabledDays );
-            }else{
-                update_post_meta($post_id, '_edw_disabled_days', [] );
-            }
-            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
-            update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
-            update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
-            update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
-            update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
-            update_post_meta($post_id, '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
-            
-            if(isset($_POST['_edw_overwrite'])) {
-                update_post_meta($post_id, '_edw_overwrite','1');
-            }else{
-                update_post_meta($post_id, '_edw_overwrite','0');
+            if(isset($_POST['_edw_max_days'])) {
+                if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
+                    //Sanitize disabled days
+                    $disabledDays = array_map('sanitize_text_field', $_POST['_edw_disabled_days']);
+                    update_post_meta($post_id, '_edw_disabled_days', $disabledDays );
+                }else{
+                    update_post_meta($post_id, '_edw_disabled_days', [] );
+                }
+                update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+                update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
+                update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
+                update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
+                update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+                update_post_meta($post_id, '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
+                
+                if(isset($_POST['_edw_overwrite'])) {
+                    update_post_meta($post_id, '_edw_overwrite','1');
+                }else{
+                    update_post_meta($post_id, '_edw_overwrite','0');
+                }
             }
         }
 

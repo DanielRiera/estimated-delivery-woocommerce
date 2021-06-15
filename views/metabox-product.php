@@ -2,9 +2,10 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 global $post;
 $disabledDays = get_post_meta($post->ID,'_edw_disabled_days', true);
-echo '<table class="form-table">';
+if($disabledDays == "") { $disabledDays = []; }
 
 ?>
+<table class="form-table">
 <tr valign="top">
     <th scope="row"><?=__('Overwrite general settings', 'estimated-delivery-for-woocommerce')?>
     </th>
