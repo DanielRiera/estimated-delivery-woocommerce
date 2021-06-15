@@ -4,7 +4,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.1.3
+Stable tag: 1.2.0
  
 == Description ==
 
@@ -18,17 +18,7 @@ Customize the shipping days for each product
 
 Do you need more options?
 
-Buy the PRO version and you will have access to:
-
-* Customize the shipping days for each shipping class
-* You can add the shipping date to the orders for each product
-* Change the message shown on each product
-* Modify the HTML structure to your liking
-* Add the days of the year that no shipments are made
-* 1 Year support / updates included
-* We help you design the date container to your liking
-
-Comming soon --->
+[Click here...](https://wordpress.org/support/plugin/estimated-delivery-for-woocommerce/) or [Github](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues)
 
 == Installation ==
 
@@ -41,6 +31,15 @@ Comming soon --->
 
  
 == Changelog ==
+
+= 1.2.0 =
+* **Relative Days of the week!** 
+Example 1: Guaranteed delivery on this Wednesday, 16 June
+Example 2: Guaranteed delivery on next Monday, 21 June
+* **WC-Marketplace Support** [View on Wordpress Plugin Repository](https://wordpress.org/plugins/dc-woocommerce-multi-vendor/) | [Official WebSite](https://wc-marketplace.com/)
+* Fix Product Configuration Problem
+* Fix Translate strings
+* Other minor fixes
 
 = 1.1.3 =
 * Update Readme Only
