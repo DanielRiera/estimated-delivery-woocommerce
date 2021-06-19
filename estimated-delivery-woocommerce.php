@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: TaxarPro
  * Author URI: https://taxarpro.com
- * Version: 1.2.1
+ * Version: 1.2.2
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.1');
+define('EDW_Version', '1.2.2');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -50,6 +50,12 @@ if(!defined('EDWCore')) {
             add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
             add_action( 'init', array($this, 'edw_add_shortcode'));
 
+            //Dokan Compatibility
+            add_action( 'dokan_new_product_form', array($this, 'edw_dokan_compatibility_content_tab') );
+            add_action( 'dokan_new_product_after_product_tags', array($this, 'edw_dokan_compatibility_content_tab') );
+            add_action( 'dokan_product_edit_after_product_tags', array($this, 'edw_dokan_compatibility_content_tab') );
+            
+
             //WCMP Compatiblity
             add_filter( 'wcmp_product_data_tabs', array($this, 'edw_wcmp_compatibility_filter_tabs') );
             add_action( 'wcmp_product_tabs_content', array($this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
@@ -65,7 +71,9 @@ if(!defined('EDWCore')) {
             );
             return $tabs;
         }
-
+        function edw_dokan_compatibility_content_tab() {
+            require_once(EDW_PATH . 'views/dokanmarketplace-metabox.php');    
+        }
         function edw_wcmp_compatibility_content_tab( $pro_class_obj, $product, $post ) {
             $GLOBALS["product"] = $product;
             require_once(EDW_PATH . 'views/wcmarketplace-metabox.php');     
