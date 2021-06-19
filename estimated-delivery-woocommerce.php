@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: TaxarPro
  * Author URI: https://taxarpro.com
- * Version: 1.2.0
+ * Version: 1.2.1
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.0');
+define('EDW_Version', '1.2.1');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -244,9 +244,15 @@ if(!defined('EDWCore')) {
             if(isset($_POST['type']) and $_POST['type'] == 'variation') {
                 $product_id = $product->get_parent_id();
             }else{
-                $product_id = $product->get_id();
+                if($product) {
+                    $product_id = $product->get_id();
+                }else{
+                    $product_id = false;
+                }
             }
-            $productActive = get_post_meta($product_id, '_edw_overwrite', true);
+            if($product_id) {
+                $productActive = get_post_meta($product_id, '_edw_overwrite', true);
+            }
             
             if($productActive == '1') {
                 $mode = get_post_meta($product_id,'_edw_mode', true);
@@ -263,7 +269,7 @@ if(!defined('EDWCore')) {
              * @since 1.0.3
              */
             
-            if(!$product->is_in_stock() || $product->is_on_backorder()) {
+            if( $product_id and !$product->is_in_stock() || $product->is_on_backorder()) {
                 if($productActive == '1') {
                     $days = intval(get_post_meta($product_id,'_edw_days_outstock', true));
                     $maxDays = intval(get_post_meta($product_id,'_edw_max_days_outstock', true));
@@ -278,7 +284,7 @@ if(!defined('EDWCore')) {
             }else{
                 //Check Product configuration
 
-                if($productActive == '1') {
+                if($productActive == '1' and $product_id ) {
                     $days = intval(get_post_meta($product_id,'_edw_days', true));
                     $maxDays = intval(get_post_meta($product_id,'_edw_max_days', true));
                     $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
@@ -290,13 +296,11 @@ if(!defined('EDWCore')) {
                 }
 
             }
-           
-        
+            
+            
             
             $minDate = $this->edw_get_date($disabledDays, $days);
-            $maxDate = $this->edw_get_date($disabledDays, $maxDays);
-
-            
+            $maxDate = $this->edw_get_date($disabledDays, $maxDays);            
 
             if($minDate && $maxDate) {
                 $date_format = get_option('date_format');

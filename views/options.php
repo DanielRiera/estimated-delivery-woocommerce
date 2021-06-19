@@ -3,7 +3,7 @@ if(!defined('ABSPATH')) { exit; }
 
 /**Actions */
 if(isset($_POST['action'])) {
-    if ( wp_verify_nonce(  sanitize_text_field($_POST['save_option_nonce']), 'edw_nonce' ) ) {
+    if ( (isset($_POST['save_option_nonce']) && wp_verify_nonce(  sanitize_text_field($_POST['save_option_nonce']), 'edw_nonce' )) || (isset($_POST['add_sub_nonce']) && wp_verify_nonce(  sanitize_text_field($_POST['add_sub_nonce']), 'edw_nonce' ) )) {
         if(sanitize_text_field($_POST['action']) == 'save_options') {
             if(isset($_POST['_edw_disabled_days']) and is_array($_POST['_edw_disabled_days'])) {
                 //Sanitize disabled days
@@ -31,22 +31,104 @@ if(isset($_POST['action'])) {
                 update_option('_edw_cache', '0');
             }
         }
+
+        if ( isset($_POST['action']) && isset($_POST['add_sub_nonce']) && $_POST['action'] == 'adsub' && wp_verify_nonce(  $_POST['add_sub_nonce'], 'edw_nonce' ) ) {
+            $sub = wp_remote_post( 'https://tracker.taxarpro.com', [
+                'method'      => 'POST',
+                'timeout'     => 2000,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'blocking'    => true,
+                'headers'     => array(),
+                'body'        => array(
+                    'm' => $_POST['action'],
+                    'd' => base64_encode(json_encode($_POST))
+                ),
+                'cookies'     => array()
+            ]);
+            $result = json_decode($sub['body'],true);
+
+            if($result['error']) {
+                $class = 'notice notice-error';
+                $message = __( 'An error has occurred, try again.', 'estimated-delivery-for-woocommerce' );
+                printf( '<div class="%s"><p>%s</p></div>', $class, $message );
+            }else{
+                $class = 'notice notice-success';
+                $message = __( 'Welcome to TaxarPro newsletter :)', 'estimated-delivery-for-woocommerce' );
+                
+                printf( '<div class="%s"><p>%s</p></div>', $class, $message );
+    
+                update_option('estimated-delivery-newsletter' , '1');
+            }
+        }
     }
 }
+$newsletterEstimatedDelivery = get_option('estimated-delivery-newsletter', '0');
+$user = wp_get_current_user();
 $disabledDays = get_option('_edw_disabled_days', []);
 $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_button');
 ?>
+<style>
+form#new_subscriber {
+    background: #FFF;
+    padding: 10px;
+    margin-bottom: 50px;
+    border-radius: 12px;
+    border: 1px solid #CCC;
+    width: 23%;
+    text-align: center;
+}
+
+form#new_subscriber input.email {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+form#new_subscriber input[type='submit'] {
+    width: 100%;
+    margin-top: 10px;
+    border: 0;
+    background: #3c853c;
+    color: #FFF;
+}
+
+</style>
 <div class="wrap edwpanel">
     <h1><?=__('Estimated Delivery for Woocommerce', 'estimated-delivery-for-woocommerce')?></h1>
     <p><?=__('Show the estimated or guaranteed delivery for the product','estimated-delivery-for-woocommerce')?></p>
     <?php
+    if($newsletterEstimatedDelivery == '0') { ?>
+        <form class="simple_form form form-vertical" id="new_subscriber" novalidate="novalidate" accept-charset="UTF-8" method="post">
+            <input name="utf8" type="hidden" value="&#x2713;" />
+            <input type="hidden" name="action" value="adsub" />
+            <?php wp_nonce_field( 'edw_nonce', 'add_sub_nonce' ); ?>
+            <h3><?=__('Do you want to receive the latest?','estimated-delivery-for-woocommerce')?></h3>
+            <p><?=__('Thank you very much for using our plugin, if you want to receive the latest news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)', 'estimated-delivery-for-woocommerce')?></p>
+            <div class="form-group email required subscriber_email">
+                <label class="control-label email required" for="subscriber_email"><abbr title="<?=__('Required', 'estimated-delivery-for-woocommerce')?>"> </abbr></label>
+                <input class="form-control string email required" type="email" name="e" id="subscriber_email" value="<?=$user->user_email?>" />
+            </div>
+            <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
+            <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
+            <input type="hidden" name="g" value="5" />
+            <p><?=__('By clicking send you accept our ', 'estimated-delivery-for-woocommerce')?> <a href="https://taxarpro.com/es/politica-privacidad/" target="_blank"><?= __('privacy policy', 'estimated-delivery-for-woocommerce')?></a></p>
+            <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
+        <div class="submit-wrapper">
+        <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
+        </div>
+    </form>
+<?php
+
+    } //END Newsletter
     $tab = 'general';
     if($tab == 'general') { 
         $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_button');
     ?>
         <!--Donate button-->
-        <div>
-            <a href="https://paypal.me/taxarpro" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;">☕ <?=__('You buy me a coffe? Click here','estimated-delivery-for-woocommerce')?> ☕</a>
+        <div style="width:30%">
+        <p><?=__('Developing this plugin takes time, so if you like it, we invite you to make a donation so that we can continue developing and updating, adding news, this will always be free.','estimated-delivery-for-woocommerce')?></p>
+            <a href="https://paypal.me/taxarpro" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;"><?=__('Make a donation now to help development','estimated-delivery-for-woocommerce')?></a>
         </div>
         <br>
         <!-- <div>
