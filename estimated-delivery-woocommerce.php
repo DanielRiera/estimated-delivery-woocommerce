@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Estimated Delivery for WooCommerce
  * Description: Show estimated / guaranteed delivery, simple and easy
- * Author: TaxarPro
- * Author URI: https://taxarpro.com
- * Version: 1.2.2
+ * Author: Daniel Riera
+ * Author URI: https://danielriera.net
+ * Version: 1.2.3
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.2');
+define('EDW_Version', '1.2.3');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -239,7 +239,8 @@ if(!defined('EDWCore')) {
         function edw_show_message($productParam = false){
             global $product;
             $returnResult = false;
-            if($productParam) {
+            $productActive = '0';
+            if($productParam and $productParam != NULL) {
                 $product = wc_get_product($productParam);
                 $returnResult = true;
             }
@@ -277,7 +278,7 @@ if(!defined('EDWCore')) {
              * @since 1.0.3
              */
             
-            if( $product_id and !$product->is_in_stock() || $product->is_on_backorder()) {
+            if( $product_id and (!$product->is_in_stock() || $product->is_on_backorder())) {
                 if($productActive == '1') {
                     $days = intval(get_post_meta($product_id,'_edw_days_outstock', true));
                     $maxDays = intval(get_post_meta($product_id,'_edw_max_days_outstock', true));

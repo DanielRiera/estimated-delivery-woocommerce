@@ -4,7 +4,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.2.2
+Stable tag: 1.2.3
  
 == Description ==
 
@@ -30,6 +30,9 @@ Do you need more options?
 
  
 == Changelog ==
+
+= 1.2.3 =
+* Fix PHP errors
 
 = 1.2.2 =
 * 🎉**Dokan Multivendor Suppport**🎉 [View on WordPress Plugin Repository](https://es.wordpress.org/plugins/dokan-lite/) | [Official WebSite](https://wedevs.com/dokan)
