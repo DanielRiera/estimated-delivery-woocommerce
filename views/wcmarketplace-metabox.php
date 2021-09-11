@@ -43,6 +43,23 @@ if($disabledDays == "") { $disabledDays = []; }
                 </td>
             </tr>
             <tr valign="top">
+                <th scope="row"><?=__('Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
+                </th>
+                <td>
+                    <label>
+                    <input type="number" min="0" max="99999" name="_edw_days_backorders" value="<?=get_post_meta($product->get_id(), '_edw_days_backorders', true)?>" /></label>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?=__('Max Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
+                <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
+                </th>
+                <td>
+                    <label>
+                    <input type="number" min="0" max="99999" name="_edw_max_days_backorders" value="<?=get_post_meta($product->get_id(), '_edw_max_days_backorders', true)?>" /></label>
+                </td>
+            </tr>
+            <tr valign="top">
                 <th scope="row"><?=__('Estimated or Guaranteed', 'estimated-delivery-for-woocommerce')?>
                     <p class="description"><?=__('The message will change.','estimated-delivery-for-woocommerce')?></p>
                 </th>
