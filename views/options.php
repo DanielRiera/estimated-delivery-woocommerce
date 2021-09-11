@@ -18,6 +18,8 @@ if(isset($_POST['action'])) {
             update_option('_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
             update_option('_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
             update_option('_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
+            update_option('_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
+            update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
 
             if(isset($_POST['_edw_relative_dates'])) {
                 update_option('_edw_relative_dates', '1');
@@ -193,6 +195,23 @@ form#new_subscriber input[type='submit'] {
                     <td>
                         <label>
                         <input type="number" min="0" max="99999" name="_edw_max_days_outstock" value="<?=get_option('_edw_max_days_outstock', '')?>" /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="number" min="0" max="99999" name="_edw_days_backorders" value="<?=get_option('_edw_days_backorders', '')?>" /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Max Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="number" min="0" max="99999" name="_edw_max_days_backorders" value="<?=get_option('_edw_max_days_backorders', '')?>" /></label>
                     </td>
                 </tr>
                 <tr valign="top">

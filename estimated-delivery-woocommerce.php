@@ -141,6 +141,8 @@ if(!defined('EDWCore')) {
                 update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
                 update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
                 update_post_meta($post_id, '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
+                update_post_meta($post_id, '_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
+                update_post_meta($post_id, '_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
                 
                 if(isset($_POST['_edw_overwrite'])) {
                     update_post_meta($post_id, '_edw_overwrite','1');
@@ -278,7 +280,7 @@ if(!defined('EDWCore')) {
              * @since 1.0.3
              */
             
-            if( $product_id and (!$product->is_in_stock() || $product->is_on_backorder())) {
+            if( $product_id and !$product->is_in_stock()) { //OUTSTOCK
                 if($productActive == '1') {
                     $days = intval(get_post_meta($product_id,'_edw_days_outstock', true));
                     $maxDays = intval(get_post_meta($product_id,'_edw_max_days_outstock', true));
@@ -286,6 +288,19 @@ if(!defined('EDWCore')) {
                 }else{
                     $maxDays = intval(get_option('_edw_max_days_outstock'));
                     $days = intval(get_option('_edw_days_outstock'));
+                    $disabledDays = get_option('_edw_disabled_days');
+                    
+                }
+
+            }else if($product->is_on_backorder()){ //BACKORDER
+
+                if($productActive == '1') {
+                    $days = intval(get_post_meta($product_id,'_edw_days_backorders', true));
+                    $maxDays = intval(get_post_meta($product_id,'_edw_max_days_backorders', true));
+                    $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
+                }else{
+                    $maxDays = intval(get_option('_edw_max_days_backorders'));
+                    $days = intval(get_option('_edw_days_backorders'));
                     $disabledDays = get_option('_edw_disabled_days');
                     
                 }
