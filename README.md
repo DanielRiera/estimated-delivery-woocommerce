@@ -33,6 +33,8 @@ Do you need more options?
 
 = 1.2.3 =
 * Fix PHP errors
+* Add support for backorders
+* Fix outstock
 
 = 1.2.2 =
 * 🎉**Dokan Multivendor Suppport**🎉 [View on WordPress Plugin Repository](https://es.wordpress.org/plugins/dokan-lite/) | [Official WebSite](https://wedevs.com/dokan)
