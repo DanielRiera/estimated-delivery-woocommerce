@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.2.3
+ * Version: 1.2.4
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.3');
+define('EDW_Version', '1.2.4');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -290,6 +290,11 @@ if(!defined('EDWCore')) {
                     $days = intval(get_option('_edw_days_outstock'));
                     $disabledDays = get_option('_edw_disabled_days');
                     
+                }
+
+                //If days set is 0, return empty. No show message
+                if($days == 0) {
+                    return;
                 }
 
             }else if($product->is_on_backorder()){ //BACKORDER

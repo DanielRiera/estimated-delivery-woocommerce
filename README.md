@@ -1,10 +1,10 @@
 === Estimated Delivery for Woocomerce ===
-Contributors: taxarpro, danielriera
+Contributors: danielriera
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 5.7.1
 Requires PHP: 5.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
  
 == Description ==
 
@@ -30,6 +30,9 @@ Do you need more options?
 
  
 == Changelog ==
+
+= 1.2.4 =
+* If set 0 days and is out stock disable message
 
 = 1.2.3 =
 * Fix PHP errors
