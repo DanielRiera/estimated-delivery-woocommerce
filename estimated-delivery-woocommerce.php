@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.2.4
+ * Version: 1.2.5
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -294,7 +294,7 @@ if(!defined('EDWCore')) {
 
                 //If days set is 0, return empty. No show message
                 if($days == 0) {
-                    return;
+                    return '<div class="edw_date" style="display:none"></div>';
                 }
 
             }else if($product->is_on_backorder()){ //BACKORDER
