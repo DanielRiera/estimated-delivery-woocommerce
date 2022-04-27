@@ -374,9 +374,9 @@ if(!defined('EDWCore')) {
                
 
                 if($mode == "1") {
-                    $string = '<div class="edw_date">'.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
+                    $string = '<div class="edw_date"><span class="title_estimate_delivery">'.__('Estimated delivery','estimated-delivery-for-woocommerce').''.$elon.'</span> <span class="date_estimate_delivery>'.$date.'</span></div>';
                 }else{
-                    $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
+                    $string = '<div class="edw_date"><span class="title_estimate_delivery">'.__('Guaranteed delivery','estimated-delivery-for-woocommerce').''.$elon.'</span> <span class="date_estimate_delivery>'.$date.'</span></div>';
                 }
     
                 if($returnResult) {
