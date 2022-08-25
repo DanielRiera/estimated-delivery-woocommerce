@@ -2,7 +2,7 @@
 Contributors: danielriera
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
-Tested up to: 5.7.1
+Tested up to: 6.0.1
 Requires PHP: 5.0
 Stable tag: 1.2.5
  

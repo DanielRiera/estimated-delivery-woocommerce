@@ -175,7 +175,7 @@ msgid "An error has occurred, try again."
 msgstr ""
 
 #: views/options.php:57
-msgid "Welcome to TaxarPro newsletter :)"
+msgid "Welcome to newsletter :)"
 msgstr ""
 
 #: views/options.php:98

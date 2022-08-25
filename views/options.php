@@ -56,7 +56,7 @@ if(isset($_POST['action'])) {
                 printf( '<div class="%s"><p>%s</p></div>', $class, $message );
             }else{
                 $class = 'notice notice-success';
-                $message = __( 'Welcome to TaxarPro newsletter :)', 'estimated-delivery-for-woocommerce' );
+                $message = __( 'Welcome to newsletter :)', 'estimated-delivery-for-woocommerce' );
                 
                 printf( '<div class="%s"><p>%s</p></div>', $class, $message );
     
@@ -113,8 +113,7 @@ form#new_subscriber input[type='submit'] {
             </div>
             <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
             <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
-            <input type="hidden" name="g" value="5" />
-            <p><?=__('By clicking send you accept our ', 'estimated-delivery-for-woocommerce')?> <a href="https://taxarpro.com/es/politica-privacidad/" target="_blank"><?= __('privacy policy', 'estimated-delivery-for-woocommerce')?></a></p>
+            <input type="hidden" name="g" value="1" />
             <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
         <div class="submit-wrapper">
         <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
@@ -130,16 +129,9 @@ form#new_subscriber input[type='submit'] {
         <!--Donate button-->
         <div style="width:30%">
         <p><?=__('Developing this plugin takes time, so if you like it, we invite you to make a donation so that we can continue developing and updating, adding news, this will always be free.','estimated-delivery-for-woocommerce')?></p>
-            <a href="https://paypal.me/taxarpro" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;"><?=__('Make a donation now to help development','estimated-delivery-for-woocommerce')?></a>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;"><?=__('Make a donation now to help development','estimated-delivery-for-woocommerce')?></a>
         </div>
         <br>
-        <!-- <div>
-        <a href="https://paypal.me/taxarpro" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;">🚀
-            <?php 
-            // echo __('Buy PRO version, Click here to see all the features','estimated-delivery-for-woocommerce')
-            ?>
-        </a>
-        </div> -->
 
         <form method="post">
             <input type="hidden" name="action" value="save_options" />

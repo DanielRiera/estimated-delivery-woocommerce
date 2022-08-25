@@ -175,8 +175,8 @@ msgid "An error has occurred, try again."
 msgstr "Ha ocurrido un error, pruebe de nuevo."
 
 #: views/options.php:57
-msgid "Welcome to TaxarPro newsletter :)"
-msgstr "Bienvenid@ al newsletter de TaxarPro"
+msgid "Welcome to newsletter :)"
+msgstr "Bienvenid@ al newsletter"
 
 #: views/options.php:98
 msgid "Estimated Delivery for Woocommerce"
