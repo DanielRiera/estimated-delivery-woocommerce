@@ -35,7 +35,7 @@ if(isset($_POST['action'])) {
         }
 
         if ( isset($_POST['action']) && isset($_POST['add_sub_nonce']) && $_POST['action'] == 'adsub' && wp_verify_nonce(  $_POST['add_sub_nonce'], 'edw_nonce' ) ) {
-            $sub = wp_remote_post( 'https://tracker.taxarpro.com', [
+            $sub = wp_remote_post( 'https://mailing.danielriera.net', [
                 'method'      => 'POST',
                 'timeout'     => 2000,
                 'redirection' => 5,
@@ -100,28 +100,29 @@ form#new_subscriber input[type='submit'] {
     <h1><?=__('Estimated Delivery for Woocommerce', 'estimated-delivery-for-woocommerce')?></h1>
     <p><?=__('Show the estimated or guaranteed delivery for the product','estimated-delivery-for-woocommerce')?></p>
     <?php
-    if($newsletterEstimatedDelivery == '0') { ?>
-        <form class="simple_form form form-vertical" id="new_subscriber" novalidate="novalidate" accept-charset="UTF-8" method="post">
-            <input name="utf8" type="hidden" value="&#x2713;" />
-            <input type="hidden" name="action" value="adsub" />
-            <?php wp_nonce_field( 'edw_nonce', 'add_sub_nonce' ); ?>
-            <h3><?=__('Do you want to receive the latest?','estimated-delivery-for-woocommerce')?></h3>
-            <p><?=__('Thank you very much for using our plugin, if you want to receive the latest news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)', 'estimated-delivery-for-woocommerce')?></p>
-            <div class="form-group email required subscriber_email">
-                <label class="control-label email required" for="subscriber_email"><abbr title="<?=__('Required', 'estimated-delivery-for-woocommerce')?>"> </abbr></label>
-                <input class="form-control string email required" type="email" name="e" id="subscriber_email" value="<?=$user->user_email?>" />
+        if($newsletterEstimatedDelivery == '0') { ?>
+            <form class="simple_form form form-vertical" id="new_subscriber" novalidate="novalidate" accept-charset="UTF-8" method="post">
+                <input name="utf8" type="hidden" value="&#x2713;" />
+                <input type="hidden" name="action" value="adsub" />
+                <?php wp_nonce_field( 'edw_nonce', 'add_sub_nonce' ); ?>
+                <h3><?=__('Do you want to receive the latest?','estimated-delivery-for-woocommerce')?></h3>
+                <p><?=__('Thank you very much for using our plugin, if you want to receive the latest news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)', 'estimated-delivery-for-woocommerce')?></p>
+                <div class="form-group email required subscriber_email">
+                    <label class="control-label email required" for="subscriber_email"><abbr title="<?=__('Required', 'estimated-delivery-for-woocommerce')?>"> </abbr></label>
+                    <input class="form-control string email required" type="email" name="e" id="subscriber_email" value="<?=$user->user_email?>" />
+                </div>
+                <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
+                <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
+                <input type="hidden" name="g" value="1" />
+                <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
+            <div class="submit-wrapper">
+            <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
             </div>
-            <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
-            <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
-            <input type="hidden" name="g" value="1" />
-            <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
-        <div class="submit-wrapper">
-        <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
-        </div>
-    </form>
-<?php
+        </form>
+    <?php
+        } //END Newsletter
 
-    } //END Newsletter
+    //Tabs
     $tab = 'general';
     if($tab == 'general') { 
         $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_button');

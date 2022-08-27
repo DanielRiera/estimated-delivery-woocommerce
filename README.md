@@ -1,5 +1,6 @@
 === Estimated Delivery for Woocomerce ===
 Contributors: danielriera
+Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.0.1
@@ -10,14 +11,15 @@ Stable tag: 1.2.5
 
 Shows the estimated or guaranteed delivery date on each product, select the days on which deliveries are not made.
 
-[estimate_delivery] shortcode available from 1.1.1 version.
+
+```[estimate_delivery]``` shortcode available from 1.1.1 version.
 
 **🎉 Dokan Multivendor & WC Marketplace Support 🎉**
 Here it is! Now Estimate Delivery for Woocommerce is compatible with Dokan Multivendor and WC Marketplace, you asked us for compatibility with these plugins and here it is. 🤪
 
 Do you need more options?
 
-[Click here...](https://wordpress.org/support/plugin/estimated-delivery-for-woocommerce/) or [Github](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues)
+[Click here Github](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues)
 
 == Installation ==
 
@@ -30,6 +32,11 @@ Do you need more options?
 
  
 == Changelog ==
+
+= 1.2.6 =
+* Update last version WordPress and WooCommerce
+* Change Newsletter :)
+* Minor Fixes
 
 = 1.2.5 =
 * If set 0 days and is out stock disable message
