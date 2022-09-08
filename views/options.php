@@ -20,11 +20,17 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
             update_option('_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
             update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
-
+            
             if(isset($_POST['_edw_relative_dates'])) {
                 update_option('_edw_relative_dates', '1');
             }else{
                 update_option('_edw_relative_dates', '0');
+            }
+
+            if(isset($_POST['_edw_same_day'])) {
+                update_option('_edw_same_day', '1');
+            }else{
+                update_option('_edw_same_day', '0');
             }
 
             if(isset($_POST['_edw_cache'])) {
@@ -145,6 +151,15 @@ form#new_subscriber input[type='submit'] {
                     <td>
                         <label>
                         <input type="checkbox" value="1" name="_edw_cache" <?= get_option('_edw_cache', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Delivery same day', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('When you set 0 in any option the estimated delivery is disabled, activate this option to allow setting 0 and displaying the estimated date.','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" value="1" name="_edw_same_day" <?= get_option('_edw_same_day', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
                     </td>
                 </tr>
                 <tr valign="top">
