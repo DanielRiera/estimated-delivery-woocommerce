@@ -103,4 +103,6 @@ Example 2: Guaranteed delivery on next Monday, 21 June
 
 == Localization ==
 
-Español (Spanish), English (English US)
+[Translate into your language](https://translate.wordpress.org/projects/wp-plugins/estimated-delivery-for-woocommerce/)
+
+Spanish, English and French
