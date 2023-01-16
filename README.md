@@ -36,6 +36,7 @@ Do you need more options?
 = 1.2.8 =
 * Initial Translate NL
 * Initial Translate IT
+* Translate to French
 
 = 1.2.7 =
 * Backorders fix
