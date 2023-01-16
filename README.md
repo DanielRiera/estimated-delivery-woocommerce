@@ -5,7 +5,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.0.1
 Requires PHP: 5.0
-Stable tag: 1.2.7
+Stable tag: 1.2.8
  
 == Description ==
 
@@ -32,6 +32,10 @@ Do you need more options?
 
  
 == Changelog ==
+
+= 1.2.8 =
+* Initial Translate NL
+* Initial Translate IT
 
 = 1.2.7 =
 * Backorders fix
