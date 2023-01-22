@@ -4,20 +4,20 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.2.8
+ * Version: 1.2.9
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
  * WC tested up to: 6.8.2
  * Required WP: 5.0
- * Tested WP: 6.0.1
+ * Tested WP: 6.1.1
  */
 if(!defined('ABSPATH')) { exit; }
 
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.8');
+define('EDW_Version', '1.2.9');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -328,6 +328,13 @@ if(!defined('EDWCore')) {
             
             if($days == 0 and get_option('_edw_same_day', '0') == '0') {
                 return '';
+            }
+            $time_max = get_option('_edw_max_hour', '');
+            if($time_max && strtotime($time_max) <= strtotime(date('H:i'))) {
+                $days += 1;
+                if($maxDays) {
+                    $maxDays += 1;
+                }
             }
             
             

@@ -20,7 +20,7 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
             update_option('_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
             update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
-            
+            update_option('_edw_max_hour', sanitize_text_field($_POST['_edw_max_hour']));
             if(isset($_POST['_edw_relative_dates'])) {
                 update_option('_edw_relative_dates', '1');
             }else{
@@ -160,6 +160,17 @@ form#new_subscriber input[type='submit'] {
                     <td>
                         <label>
                         <input type="checkbox" value="1" name="_edw_same_day" <?= get_option('_edw_same_day', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Maximum Time', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description">
+                        <?= sprintf(__('Maximum time to consider an extra day of shipping (Server time) HH:mm now is %s', 'estimated-delivery-for-woocommerce'), date('H:i'));?>
+                    </p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="time" value="1" name="_edw_max_hour" <?= get_option('_edw_max_hour', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
                     </td>
                 </tr>
                 <tr valign="top">
