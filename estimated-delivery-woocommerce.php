@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.2.9
+ * Version: 1.2.10
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.9');
+define('EDW_Version', '1.2.10');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -60,6 +60,17 @@ if(!defined('EDWCore')) {
             add_filter( 'wcmp_product_data_tabs', array($this, 'edw_wcmp_compatibility_filter_tabs') );
             add_action( 'wcmp_product_tabs_content', array($this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
             add_action( 'wcmp_process_product_object', array($this, 'edw_save_product_data'), 10, 2 );
+            add_filter( 'woocommerce_get_item_data',     array($this,'edw_display_cart_item'), 10, 2);
+        }
+
+        
+        function edw_display_cart_item( $item_data, $cart_item ) {
+            $date = $this->edw_show_message($cart_item['product_id'], true);
+            $item_data[] = array(
+                'key'       => $date[0],
+                'value'     => $date[1],
+            );
+            return $item_data;
         }
 
         function edw_wcmp_compatibility_filter_tabs($tabs) {
@@ -238,7 +249,7 @@ if(!defined('EDWCore')) {
             return [$day, $month, $year];
 
         }
-        function edw_show_message($productParam = false){
+        function edw_show_message($productParam = false, $separed = false){
             global $product;
             $returnResult = false;
             $productActive = '0';
@@ -384,12 +395,19 @@ if(!defined('EDWCore')) {
                
 
                 if($mode == "1") {
+                    $separed_title = __('Estimated delivery', 'estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }else{
+                    $separed_title = __('Guaranteed delivery','estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }
-    
+
+                
+                
                 if($returnResult) {
+                    if($separed) {
+                        return [$separed_title, $elon . ' ' . $date];
+                    }
                     return $string;
                 }
     
