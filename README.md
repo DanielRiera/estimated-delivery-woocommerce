@@ -5,7 +5,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.1.1
 Requires PHP: 5.0
-Stable tag: 1.2.9
+Stable tag: 1.2.10
  
 == Description ==
 
@@ -35,7 +35,7 @@ If you need support open a new ticket on GitHub
  
 == Changelog ==
 
-= 1.3.0 =
+= 1.2.10 =
 * Show on cart [#18](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues/18)
 
 = 1.2.9 =
