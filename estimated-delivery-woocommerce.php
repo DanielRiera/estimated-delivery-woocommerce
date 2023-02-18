@@ -398,7 +398,7 @@ if(!defined('EDWCore')) {
                     $separed_title = __('Estimated delivery', 'estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }else{
-                    $separed_title = __('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce');
+                    $separed_title = __('Guaranteed delivery','estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }
 
