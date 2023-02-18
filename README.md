@@ -35,6 +35,9 @@ If you need support open a new ticket on GitHub
  
 == Changelog ==
 
+= 1.3.0 =
+* Show on cart [#18](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues/18)
+
 = 1.2.9 =
 * Thanks for translate!
 * Maximum Time support! 🎉 [#30](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues/30)
