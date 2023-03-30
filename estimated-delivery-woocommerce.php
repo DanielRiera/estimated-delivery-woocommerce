@@ -66,10 +66,12 @@ if(!defined('EDWCore')) {
         
         function edw_display_cart_item( $item_data, $cart_item ) {
             $date = $this->edw_show_message($cart_item['product_id'], true);
-            $item_data[] = array(
-                'key'       => $date[0],
-                'value'     => $date[1],
-            );
+            if($date and is_array($date)) {
+                $item_data[] = array(
+                    'key'       => $date[0],
+                    'value'     => $date[1],
+                );
+            }
             return $item_data;
         }
 
