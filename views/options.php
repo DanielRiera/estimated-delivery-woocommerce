@@ -38,6 +38,18 @@ if(isset($_POST['action'])) {
             }else{
                 update_option('_edw_cache', '0');
             }
+            
+            if(isset($_POST['edw_save_date_order'])) {
+                update_option('edw_save_date_order', '1');
+            }else{
+                update_option('edw_save_date_order', '0');
+            }
+            if(isset($_POST['edw_show_list'])) {
+                update_option('edw_show_list', '1');
+            }else{
+                update_option('edw_show_list', '0');
+            }
+            
         }
 
         if ( isset($_POST['action']) && isset($_POST['add_sub_nonce']) && $_POST['action'] == 'adsub' && wp_verify_nonce(  $_POST['add_sub_nonce'], 'edw_nonce' ) ) {
@@ -100,7 +112,9 @@ form#new_subscriber input[type='submit'] {
     background: #3c853c;
     color: #FFF;
 }
-
+table th {
+    min-width:350px
+}
 </style>
 <div class="wrap edwpanel">
     <h1><?=__('Estimated Delivery for Woocommerce', 'estimated-delivery-for-woocommerce')?></h1>
@@ -163,9 +177,28 @@ form#new_subscriber input[type='submit'] {
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row"><?=__('Show date on order (Admin and Customer)', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('If you activate this option, the date will be stored with the order, the customer and you will be able to see the date on each product in the order.','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" value="1" name="edw_save_date_order" <?= get_option('edw_save_date_order', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Show date Products Lists', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('If you activate this option date show on each product on list, Store, Search, etc. Check style (CSS) for this, bottom on this page.','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" value="1" name="edw_show_list" <?= get_option('edw_show_list', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
+                    </td>
+                </tr>
+                
+                <tr valign="top">
                     <th scope="row"><?=__('Maximum Time', 'estimated-delivery-for-woocommerce')?>
                     <p class="description">
-                        <?= sprintf(__('Maximum time to consider an extra day of shipping (Server time) HH:mm now is %s', 'estimated-delivery-for-woocommerce'), date('H:i'));?>
+                        <?= sprintf(__('Maximum time to consider an extra day of shipping (Server time) HH:mm now is %s', 'estimated-delivery-for-woocommerce'), wp_date('Y-m-d H:i'));?>
                     </p>
                     </th>
                     <td>
@@ -311,6 +344,20 @@ form#new_subscriber input[type='submit'] {
     margin: 10px 0px;
     padding: 10px;
     width: fit-content;
+}
+
+//For product list
+ul.products .edw_date {
+    font-size: 12px;
+    color: #626262;
+}
+//For title checkout and cart
+dt.variation-Estimateddelivery {
+
+}
+//For Value checkout and cart
+dd.variation-Estimateddelivery {
+
 }
 </pre>
     <?php

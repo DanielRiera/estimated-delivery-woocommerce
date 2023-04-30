@@ -4,13 +4,13 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.2.10
+ * Version: 1.3.0
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 6.8.2
+ * WC tested up to: 7.6.1
  * Required WP: 5.0
- * Tested WP: 6.1.1
+ * Tested WP: 6.2
  */
 if(!defined('ABSPATH')) { exit; }
 
@@ -61,15 +61,38 @@ if(!defined('EDWCore')) {
             add_action( 'wcmp_product_tabs_content', array($this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
             add_action( 'wcmp_process_product_object', array($this, 'edw_save_product_data'), 10, 2 );
             add_filter( 'woocommerce_get_item_data',     array($this,'edw_display_cart_item'), 10, 2);
+            add_action('woocommerce_checkout_create_order_line_item', array($this, 'edw_save_custom_order_item_meta_data'), 10, 4 );
+
+            add_action('woocommerce_after_shop_loop_item_title', array($this, 'edw_show_date_list'));
+        }
+
+        function edw_show_date_list($product){
+            global $post;
+            $showOnList = get_option('edw_show_list', '0');
+            if($showOnList == '1') {
+                echo $this->edw_show_message($post);
+            }
+        }
+        
+        function edw_save_custom_order_item_meta_data( $item, $cart_item_key, $values, $order ) {
+            $savedOnOrder = get_option('edw_save_date_order', '0');
+            if($savedOnOrder != '0') {
+                $date = $this->edw_show_message($values['product_id'], true);
+                if(count($date) == 2) {
+                    $item->update_meta_data( $date[0], $date[1] );
+                }
+            }
         }
 
         
         function edw_display_cart_item( $item_data, $cart_item ) {
             $date = $this->edw_show_message($cart_item['product_id'], true);
-            $item_data[] = array(
-                'key'       => $date[0],
-                'value'     => $date[1],
-            );
+            if(count($date) == 2) {
+                $item_data[] = array(
+                    'key'       => $date[0],
+                    'value'     => $date[1],
+                );
+            }
             return $item_data;
         }
 
@@ -209,11 +232,11 @@ if(!defined('EDWCore')) {
                 return false;
             }
             if(!$dateCheck) {
-                $dateCheck = date('Y-m-d', strtotime(" + " . $daysEstimated . " days"));
+                $dateCheck = wp_date('Y-m-d', strtotime(" + " . $daysEstimated . " days"));
             }else{
-                $dateCheck = date('Y-m-d', strtotime($dateCheck . " + 1 days"));
+                $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
             }
-            $filterDisabled = date('D', strtotime($dateCheck));
+            $filterDisabled = wp_date('D', strtotime($dateCheck));
             if(in_array($filterDisabled, $disabledDays)) {
                 return $dateCheck = $this->edw_get_date($disabledDays, $daysEstimated, $dateCheck);
             }
@@ -234,15 +257,15 @@ if(!defined('EDWCore')) {
             $day = false;
             $year = false;
 
-            if(date('m', strtotime($date1)) != date('m', strtotime($date2))) {
+            if(wp_date('m', strtotime($date1)) != wp_date('m', strtotime($date2))) {
                 $month = true;
             }
 
-            if(date('d', strtotime($date1)) != date('d', strtotime($date2))) {
+            if(wp_date('d', strtotime($date1)) != wp_date('d', strtotime($date2))) {
                 $day = true;
             }
 
-            if(date('Y', strtotime($date1)) != date('Y', strtotime($date2))) {
+            if(wp_date('Y', strtotime($date1)) != wp_date('Y', strtotime($date2))) {
                 $year = true;
             }
 
@@ -361,11 +384,11 @@ if(!defined('EDWCore')) {
                     list($d, $m, $y) = $this->checkDates($minDate, $maxDate);
     
                     if(!$d && !$m && !$y) {
-                        $thisWeek = date('W');
-                        if( $useRelativeDates && $thisWeek == date('W', strtotime($minDate)) ) {
+                        $thisWeek = wp_date('W');
+                        if( $useRelativeDates && $thisWeek == wp_date('W', strtotime($minDate)) ) {
                             $elon = "";
                             $date = sprintf( __("this %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
-                        }elseif( $useRelativeDates && ($thisWeek+1) == date('W', strtotime($minDate)) ) {
+                        }elseif( $useRelativeDates && ($thisWeek+1) == wp_date('W', strtotime($minDate)) ) {
                             $elon = "";
                             $date = sprintf( __("the next %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
                         }
@@ -382,11 +405,11 @@ if(!defined('EDWCore')) {
                         }
                     }
                 }else{
-                    $thisWeek = date('W');
-                    if( $useRelativeDates &&  $thisWeek == date('W', strtotime($minDate)) ) {
+                    $thisWeek = wp_date('W');
+                    if( $useRelativeDates &&  $thisWeek == wp_date('W', strtotime($minDate)) ) {
                         $elon = "";
                         $date = sprintf( __("this %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
-                    }elseif( $useRelativeDates && ($thisWeek+1) == date('W', strtotime($minDate)) ) {
+                    }elseif( $useRelativeDates && ($thisWeek+1) == wp_date('W', strtotime($minDate)) ) {
                         $elon = "";
                         $date = sprintf( __("the next %s, %s", "estimated-delivery-for-woocommerce"), date_i18n("l", strtotime($minDate)), date_i18n("j F", strtotime($minDate)));
                     }
