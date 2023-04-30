@@ -87,7 +87,7 @@ if(!defined('EDWCore')) {
         
         function edw_display_cart_item( $item_data, $cart_item ) {
             $date = $this->edw_show_message($cart_item['product_id'], true);
-            if(count($date) == 2) {
+            if($date and is_array($date) and count($date) == 2) {
                 $item_data[] = array(
                     'key'       => $date[0],
                     'value'     => $date[1],
