@@ -3,6 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 global $product;
 
 $product = wc_get_product($product);
+if(!$product) {
+    return;
+}
 $product_type = $product->get_type();
 
 
