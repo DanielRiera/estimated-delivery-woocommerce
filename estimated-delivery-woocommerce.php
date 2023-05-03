@@ -4,7 +4,7 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.3.0
+ * Version: 1.3.1
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
@@ -17,7 +17,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.2.10');
+define('EDW_Version', '1.3.1');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -37,33 +37,69 @@ if(!defined('EDWCore')) {
         );
 
         function __construct(){
-            add_action('admin_menu', array($this, 'edw_menu'));
-            add_action('plugins_loaded', array($this, 'edw_load_textdomain'));
+            add_action('admin_menu', array(&$this, 'edw_menu'));
+            add_action('plugins_loaded', array(&$this, 'edw_load_textdomain'));
             
             if(EDW_USE_JS == '0') {
-                add_action(EDW_POSITION_SHOW, array($this, 'edw_show_message'));
+                add_action(EDW_POSITION_SHOW, array(&$this, 'edw_show_message'));
             }else{
-                add_action( 'wp_footer', array($this, 'edw_show_js'), 99 );
+                add_action( 'wp_footer', array(&$this, 'edw_show_js'), 99 );
             }
-            add_action( 'wp_enqueue_scripts', array($this, 'edw_load_style') );
-            add_action('save_post_product', array($this, 'edw_save_product'), 10, 3);
-            add_action( 'add_meta_boxes', array($this, 'edw_create_metabox_products') );
-            add_action( 'init', array($this, 'edw_add_shortcode'));
+            add_action( 'wp_enqueue_scripts', array(&$this, 'edw_load_style') );
+            add_action('save_post_product', array(&$this, 'edw_save_product'), 10, 3);
+            add_action( 'add_meta_boxes', array(&$this, 'edw_create_metabox_products') );
+            add_action( 'init', array(&$this, 'edw_add_shortcode'));
 
             //Dokan Compatibility
-            add_action( 'dokan_new_product_form', array($this, 'edw_dokan_compatibility_content_tab') );
-            add_action( 'dokan_new_product_after_product_tags', array($this, 'edw_dokan_compatibility_content_tab') );
-            add_action( 'dokan_product_edit_after_product_tags', array($this, 'edw_dokan_compatibility_content_tab') );
+            add_action( 'dokan_new_product_form', array(&$this, 'edw_dokan_compatibility_content_tab') );
+            add_action( 'dokan_new_product_after_product_tags', array(&$this, 'edw_dokan_compatibility_content_tab') );
+            add_action( 'dokan_product_edit_after_product_tags', array(&$this, 'edw_dokan_compatibility_content_tab') );
             
 
-            //WCMP Compatiblity
-            add_filter( 'wcmp_product_data_tabs', array($this, 'edw_wcmp_compatibility_filter_tabs') );
-            add_action( 'wcmp_product_tabs_content', array($this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
-            add_action( 'wcmp_process_product_object', array($this, 'edw_save_product_data'), 10, 2 );
-            add_filter( 'woocommerce_get_item_data',     array($this,'edw_display_cart_item'), 10, 2);
-            add_action('woocommerce_checkout_create_order_line_item', array($this, 'edw_save_custom_order_item_meta_data'), 10, 4 );
+            //WCMF Compatiblity Version 1.3.1
+            add_action('end_wcfm_products_manage', array(&$this, 'edw_wcmf_content_metabox'), 100, 4);
+            add_action('after_wcfm_products_manage_meta_save', array(&$this, 'edw_wcmf_save_data'), 501, 2);
 
-            add_action('woocommerce_after_shop_loop_item_title', array($this, 'edw_show_date_list'));
+            //WCMP Compatiblity
+            add_filter( 'wcmp_product_data_tabs', array(&$this, 'edw_wcmp_compatibility_filter_tabs') );
+            add_action( 'wcmp_product_tabs_content', array(&$this, 'edw_wcmp_compatibility_content_tab'), 10, 3 );
+            add_action( 'wcmp_process_product_object', array(&$this, 'edw_save_product_data'), 10, 2 );
+            add_filter( 'woocommerce_get_item_data',     array(&$this,'edw_display_cart_item'), 10, 2);
+            add_action('woocommerce_checkout_create_order_line_item', array(&$this, 'edw_save_custom_order_item_meta_data'), 10, 4 );
+            add_action('woocommerce_after_shop_loop_item_title', array(&$this, 'edw_show_date_list'));
+        }
+
+        function edw_wcmf_save_data($product_id, $wcfm_products_form_data) {
+            if(isset($wcfm_products_form_data['_edw_max_days'])) {
+                if(isset($wcfm_products_form_data['_edw_disabled_days']) and is_array($wcfm_products_form_data['_edw_disabled_days'])) {
+                    //Sanitize disabled days
+                    $disabledDays = array_map('sanitize_text_field', $wcfm_products_form_data['_edw_disabled_days']);
+                    update_post_meta($product_id, '_edw_disabled_days', $disabledDays );
+                }else{
+                    update_post_meta($product_id, '_edw_disabled_days', [] );
+                }
+                update_post_meta($product_id, '_edw_max_days',sanitize_text_field( $wcfm_products_form_data['_edw_max_days'] ));
+                update_post_meta($product_id, '_edw_days',sanitize_text_field( $wcfm_products_form_data['_edw_days'] ));
+                update_post_meta($product_id, '_edw_days_outstock',sanitize_text_field( $wcfm_products_form_data['_edw_days_outstock'] ));
+                update_post_meta($product_id, '_edw_max_days_outstock',sanitize_text_field( $wcfm_products_form_data['_edw_max_days_outstock'] ));
+                update_post_meta($product_id, '_edw_mode',sanitize_text_field( $wcfm_products_form_data['_edw_mode'] ));
+                update_post_meta($product_id, '_edw_days_backorders',sanitize_text_field( $wcfm_products_form_data['_edw_days_backorders'] ));
+                update_post_meta($product_id, '_edw_max_days_backorders',sanitize_text_field( $wcfm_products_form_data['_edw_max_days_backorders'] ));
+
+                if(isset($wcfm_products_form_data['_edw_overwrite'])) {
+                    update_post_meta($product_id, '_edw_overwrite','1');
+                }else{
+                    update_post_meta($product_id, '_edw_overwrite','0');
+                }
+            }
+            if(sanitize_text_field($wcfm_products_form_data['_edw_days']) == ''){
+                update_post_meta($product_id, '_edw_overwrite','0');
+            }
+        }
+
+        function edw_wcmf_content_metabox($product) {
+            $GLOBALS["product"] = $product;
+            include(EDW_PATH . 'views/wcfm-metabox.php');  
         }
 
         function edw_show_date_list($product){
@@ -123,17 +159,22 @@ if(!defined('EDWCore')) {
                     update_post_meta($post_data['post_ID'], '_edw_disabled_days', [] );
                 }
                 update_post_meta($post_data['post_ID'], '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
-                update_post_meta($post_data['post_ID'], '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
                 update_post_meta($post_data['post_ID'], '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
                 update_post_meta($post_data['post_ID'], '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
                 update_post_meta($post_data['post_ID'], '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
                 update_post_meta($post_data['post_ID'], '_edw_mode',sanitize_text_field( $_POST['_edw_mode'] ));
-                
+                update_post_meta($post_data['post_ID'], '_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
+                update_post_meta($post_data['post_ID'], '_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
+
                 if(isset($_POST['_edw_overwrite'])) {
                     update_post_meta($post_data['post_ID'], '_edw_overwrite','1');
                 }else{
                     update_post_meta($post_data['post_ID'], '_edw_overwrite','0');
                 }
+            }
+            
+            if(sanitize_text_field($_POST['_edw_days']) == ''){
+                update_post_meta($post_data['post_ID'], '_edw_overwrite','0');
             }
          }
 
@@ -170,7 +211,6 @@ if(!defined('EDWCore')) {
                     update_post_meta($post_id, '_edw_disabled_days', [] );
                 }
                 update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
-                update_post_meta($post_id, '_edw_max_days',sanitize_text_field( $_POST['_edw_max_days'] ));
                 update_post_meta($post_id, '_edw_days',sanitize_text_field( $_POST['_edw_days'] ));
                 update_post_meta($post_id, '_edw_days_outstock',sanitize_text_field( $_POST['_edw_days_outstock'] ));
                 update_post_meta($post_id, '_edw_max_days_outstock',sanitize_text_field( $_POST['_edw_max_days_outstock'] ));
@@ -183,6 +223,9 @@ if(!defined('EDWCore')) {
                 }else{
                     update_post_meta($post_id, '_edw_overwrite','0');
                 }
+            }
+            if(sanitize_text_field( $_POST['_edw_days']) == '') {
+                update_post_meta($post_id, '_edw_overwrite','0');
             }
         }
 
@@ -236,7 +279,7 @@ if(!defined('EDWCore')) {
             }else{
                 $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
             }
-            $filterDisabled = wp_date('D', strtotime($dateCheck));
+            $filterDisabled = date('D', strtotime($dateCheck));
             if(in_array($filterDisabled, $disabledDays)) {
                 return $dateCheck = $this->edw_get_date($disabledDays, $daysEstimated, $dateCheck);
             }
