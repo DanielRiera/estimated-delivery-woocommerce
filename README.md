@@ -5,7 +5,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.2
 Requires PHP: 5.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
  
 == Description ==
 
@@ -35,7 +35,7 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
  
 == Changelog ==
 
-= 1.3.1 =
+= 1.3.1 / 1.3.2 =
 * Add support for [WCFM](https://wclovers.com?utm_source=estimated-delivery-for-woocommerce) :)
 * Fix Save Backorders values for WC Marketplace
 * Fix Disabled days (Check your timezone)
