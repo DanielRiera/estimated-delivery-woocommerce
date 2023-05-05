@@ -420,9 +420,7 @@ if(!defined('EDWCore')) {
             $time_max = get_option('_edw_max_hour', '');
             if($time_max && strtotime($time_max) <= strtotime(date('H:i'))) {
                 $days += 1;
-                echo 'Sumando un día por llegar a la hora máxima</br>';
                 if($maxDays) {
-                    echo 'Sumando un max día por llegar a la hora máxima</br>';
                     $maxDays += 1;
                 }
             }
