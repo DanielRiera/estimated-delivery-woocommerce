@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.2
-Requires PHP: 5.0
+Requires PHP: 5.3
 Stable tag: 1.3.2
  
 == Description ==

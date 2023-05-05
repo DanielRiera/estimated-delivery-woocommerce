@@ -270,22 +270,33 @@ if(!defined('EDWCore')) {
             require_once(EDW_PATH . 'views/options.php');
         }
 
-        private function edw_get_date($disabledDays, $daysEstimated, $dateCheck = false){
+        private function edw_get_date($disabledDays, $daysEstimated){
             if(count($disabledDays) == 7) {
                 return false;
             }
-            if(!$dateCheck) {
-                $dateCheck = wp_date('Y-m-d', strtotime(" + " . $daysEstimated . " days"));
-            }else{
-                $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
-            }
-            $filterDisabled = date('D', strtotime($dateCheck));
-            if(in_array($filterDisabled, $disabledDays)) {
-                return $dateCheck = $this->edw_get_date($disabledDays, $daysEstimated, $dateCheck);
-            }
+            $wpTimezone = wp_timezone();
 
+            //Create intervals for calculate days
+            $start_date = date_create("now", $wpTimezone);
+            $end_date = date_create("now", $wpTimezone);
+            $end_date = date_add($end_date, date_interval_create_from_date_string("{$daysEstimated} days"));
+            $interval = new DateInterval('P1D');
+            $date_range = new DatePeriod($start_date, $interval, $end_date);
 
-            return $dateCheck;
+            $general_sum = 0;
+            $response = false;
+            foreach ($date_range as $date) {
+                $filterDisabled = $date->format('D');
+                if(in_array($filterDisabled, $disabledDays)) {
+                    $general_sum++;
+                }
+                $response = $date;
+            }
+            
+            //Add extra days for disable
+            $response = date_add($response, date_interval_create_from_date_string("{$general_sum} days") );
+            
+            return $response->format('Y-m-d');
         }
         /**
          * Check dates if one element (day, month or year) change between
@@ -409,7 +420,9 @@ if(!defined('EDWCore')) {
             $time_max = get_option('_edw_max_hour', '');
             if($time_max && strtotime($time_max) <= strtotime(date('H:i'))) {
                 $days += 1;
+                echo 'Sumando un día por llegar a la hora máxima</br>';
                 if($maxDays) {
+                    echo 'Sumando un max día por llegar a la hora máxima</br>';
                     $maxDays += 1;
                 }
             }

@@ -203,7 +203,7 @@ table th {
                     </th>
                     <td>
                         <label>
-                        <input type="time" value="1" name="_edw_max_hour" <?= get_option('_edw_max_hour', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
+                        <input type="time" name="_edw_max_hour" value="<?=get_option('_edw_max_hour', '')?>" /></label>
                     </td>
                 </tr>
                 <tr valign="top">
