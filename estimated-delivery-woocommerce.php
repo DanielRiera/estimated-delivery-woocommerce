@@ -421,8 +421,12 @@ if(!defined('EDWCore')) {
                 return '';
             }
             $time_max = get_option('_edw_max_hour', '');
-            if($time_max && strtotime($time_max) <= strtotime(date('H:i'))) {
-                $days += 1;
+            if($time_max) {
+                $wpTimezone = wp_timezone();
+                $hourNow = date_create('now',  $wpTimezone);
+                if(strtotime($time_max) <= strtotime($hourNow->format('H:i'))) {
+                    $days += 1;
+                }
             }
             
             
