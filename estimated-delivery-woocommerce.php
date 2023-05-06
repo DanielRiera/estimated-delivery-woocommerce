@@ -277,13 +277,17 @@ if(!defined('EDWCore')) {
             $wpTimezone = wp_timezone();
 
             //Create intervals for calculate days
+            $general_sum = 0;
             $start_date = date_create("now", $wpTimezone);
             $end_date = date_create("now", $wpTimezone);
             $end_date = date_add($end_date, date_interval_create_from_date_string("{$daysEstimated} days"));
+            $filterDisabled = $end_date->format('D');
+            if(in_array($filterDisabled, $disabledDays)) {
+                $general_sum++;
+            }
             $interval = new DateInterval('P1D');
             $date_range = new DatePeriod($start_date, $interval, $end_date);
 
-            $general_sum = 0;
             $response = false;
             foreach ($date_range as $date) {
                 $filterDisabled = $date->format('D');
@@ -292,7 +296,6 @@ if(!defined('EDWCore')) {
                 }
                 $response = $date;
             }
-            
             //Add extra days for disable
             $response = date_add($response, date_interval_create_from_date_string("{$general_sum} days") );
             
@@ -420,9 +423,6 @@ if(!defined('EDWCore')) {
             $time_max = get_option('_edw_max_hour', '');
             if($time_max && strtotime($time_max) <= strtotime(date('H:i'))) {
                 $days += 1;
-                if($maxDays) {
-                    $maxDays += 1;
-                }
             }
             
             
