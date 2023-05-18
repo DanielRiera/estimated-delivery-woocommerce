@@ -269,6 +269,23 @@ if(!defined('EDWCore')) {
 
             require_once(EDW_PATH . 'views/options.php');
         }
+        
+        private function edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration = 0) {
+            if(count($disabledDays) == 7) {
+                return false;
+            }
+            if($iteration == $daysToAdd) {
+              return $dateCheck;
+            }
+
+            $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
+
+            $filterDisabled = date('D', strtotime($dateCheck));
+            if(!in_array($filterDisabled, $disabledDays)) {
+              $iteration += 1;
+            }
+            return $this->edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration);
+        }
 
         private function edw_get_date($disabledDays, $daysEstimated, $dateCheck = false){
             if(count($disabledDays) == 7) {
@@ -413,10 +430,13 @@ if(!defined('EDWCore')) {
                     $maxDays += 1;
                 }
             }
-            
-            
-            $minDate = $this->edw_get_date($disabledDays, $days);
-            $maxDate = $this->edw_get_date($disabledDays, $maxDays);            
+
+            $today = wp_date('Y-m-d');
+            $minDate = $this->edw_get_working_day_date($disabledDays, $days, $today);
+            if($minDate) {
+              $dateDiff = $maxDays - $days;
+              $maxDate = $this->edw_get_working_day_date($disabledDays, $dateDiff, $minDate);
+            }
 
             if($minDate && $maxDate) {
                 $date_format = get_option('date_format');
