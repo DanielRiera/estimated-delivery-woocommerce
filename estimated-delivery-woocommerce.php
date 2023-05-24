@@ -281,29 +281,12 @@ if(!defined('EDWCore')) {
             $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
 
             $filterDisabled = date('D', strtotime($dateCheck));
-            if(!in_array($filterDisabled, $disabledDays)) {
+            if(is_array($disabledDays) and !in_array($filterDisabled, $disabledDays)) {
               $iteration += 1;
             }
             return $this->edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration);
         }
 
-        private function edw_get_date($disabledDays, $daysEstimated, $dateCheck = false){
-            if(count($disabledDays) == 7) {
-                return false;
-            }
-            if(!$dateCheck) {
-                $dateCheck = wp_date('Y-m-d', strtotime(" + " . $daysEstimated . " days"));
-            }else{
-                $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
-            }
-            $filterDisabled = date('D', strtotime($dateCheck));
-            if(in_array($filterDisabled, $disabledDays)) {
-                return $dateCheck = $this->edw_get_date($disabledDays, $daysEstimated, $dateCheck);
-            }
-
-
-            return $dateCheck;
-        }
         /**
          * Check dates if one element (day, month or year) change between
          *
