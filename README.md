@@ -5,7 +5,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.2
 Requires PHP: 5.0
-Stable tag: 1.3.2
+Stable tag: 1.3.3
  
 == Description ==
 
@@ -34,6 +34,11 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
 
  
 == Changelog ==
+
+= 1.3.3 =
+* Fix disabled days, thanks :) [@elrosa](https://github.com/elrosa).
+* Fix max time, now if max time is passed add 1 day to min and max.
+* Fix warn on calculate if disabled days is no set.
 
 = 1.3.1 / 1.3.2 =
 * Add support for [WCFM](https://wclovers.com?utm_source=estimated-delivery-for-woocommerce) :)
