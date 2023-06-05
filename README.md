@@ -5,7 +5,7 @@ Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
 Tested up to: 6.2
 Requires PHP: 5.0
-Stable tag: 1.3.3
+Stable tag: 1.3.4
  
 == Description ==
 
@@ -34,6 +34,9 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
 
  
 == Changelog ==
+
+= 1.3.4 =
+* Fix memory PHP
 
 = 1.3.3 =
 * Fix disabled days, thanks :) [@elrosa](https://github.com/elrosa).
