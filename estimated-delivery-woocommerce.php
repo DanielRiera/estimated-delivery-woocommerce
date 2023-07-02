@@ -114,7 +114,7 @@ if(!defined('EDWCore')) {
             $savedOnOrder = get_option('edw_save_date_order', '0');
             if($savedOnOrder != '0') {
                 $date = $this->edw_show_message($values['product_id'], true);
-                if(count($date) == 2) {
+                if($date and is_array($date) and count($date) == 2) {
                     $item->update_meta_data( $date[0], $date[1] );
                 }
             }
