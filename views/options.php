@@ -21,6 +21,7 @@ if(isset($_POST['action'])) {
             update_option('_edw_days_backorders',sanitize_text_field( $_POST['_edw_days_backorders'] ));
             update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
             update_option('_edw_max_hour', sanitize_text_field($_POST['_edw_max_hour']));
+            update_option('_edw_holidays_dates', sanitize_textarea_field($_POST['_edw_holidays_dates']));
             if(isset($_POST['_edw_relative_dates'])) {
                 update_option('_edw_relative_dates', '1');
             }else{
@@ -133,7 +134,7 @@ table th {
                 </div>
                 <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
                 <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
-                <input type="hidden" name="g" value="1" />
+                <input type="hidden" name="g" value="1,5" />
                 <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
             <div class="submit-wrapper">
             <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
@@ -332,6 +333,15 @@ table th {
                                 ?>               
                             </select>
                         </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Holidays Dates', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic year. Example: XXXX/31/12','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <textarea name="_edw_holidays_dates" cols="70" rows="20" /><?=get_option('_edw_holidays_dates', '')?></textarea></label>
                     </td>
                 </tr>
             </table>

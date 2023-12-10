@@ -1,11 +1,11 @@
-=== Estimated Delivery for Woocomerce ===
+=== Estimated Delivery for WooCommerce ===
 Contributors: DanielRiera
 Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: estimated delivery, delivery woocommerce
 Requires at least: 4.3
-Tested up to: 6.2
+Tested up to: 6.4.2
 Requires PHP: 5.0
-Stable tag: 1.3.4
+Stable tag: 1.3.5
  
 == Description ==
 
@@ -17,6 +17,14 @@ Shows the estimated or guaranteed delivery date on each product, select the days
 
 **🎉 [Dokan Multivendor](https://wedevs.com/dokan?utm_source=estimated-delivery-for-woocommerce) | [WC Marketplace](https://multivendorx.com?utm_source=estimated-delivery-for-woocommerce) | [WCFM](https://wclovers.com?utm_source=estimated-delivery-for-woocommerce) support is ready 🎉**
 Here it is! Now Estimate Delivery for Woocommerce is compatible with Dokan Multivendor, WC Marketplace and WCFM, you asked us for compatibility with these plugins and here it is. 🤪
+
+### Holidays dates support (From 1.3.5 version)!
+
+You can add holidays dates with next format, comma separated:
+(Use XXXX for dynamic year)
+
+XXXX/12/31,XXXX/01/01,2024/10/02
+
 
 Do you need more options?
 
@@ -34,6 +42,11 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
 
  
 == Changelog ==
+
+= 1.3.5 =
+* Compatibility with High-Performance order storage (COT)
+* Add new option with Holidays dates, see description for more information
+* Minor fixes
 
 = 1.3.4 =
 * Fix memory PHP

@@ -4,20 +4,20 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.3.4
+ * Version: 1.3.5
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 7.6.1
+ * WC tested up to: 8.3.1
  * Required WP: 5.0
- * Tested WP: 6.2
+ * Tested WP: 6.4.2
  */
 if(!defined('ABSPATH')) { exit; }
 
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.3.4');
+define('EDW_Version', '1.3.5');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -67,6 +67,12 @@ if(!defined('EDWCore')) {
             add_filter( 'woocommerce_get_item_data',     array(&$this,'edw_display_cart_item'), 10, 2);
             add_action('woocommerce_checkout_create_order_line_item', array(&$this, 'edw_save_custom_order_item_meta_data'), 10, 4 );
             add_action('woocommerce_after_shop_loop_item_title', array(&$this, 'edw_show_date_list'));
+
+            add_action( 'before_woocommerce_init', function() {
+                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+                    \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+                }
+            } );
         }
 
         function edw_wcmf_save_data($product_id, $wcfm_products_form_data) {
@@ -269,6 +275,24 @@ if(!defined('EDWCore')) {
 
             require_once(EDW_PATH . 'views/options.php');
         }
+
+        private function get_holidays_dates() {
+            $holidays = get_option('_edw_holidays_dates', false);
+            if($holidays) {
+                $holidays = str_replace("XXXX", strval(date('Y')), $holidays);
+                $holidays = str_replace("/", "-", $holidays);
+                return explode(",", $holidays);
+            }
+            return array();
+        }
+
+        private function check_holidays_date($date) {
+            $holidays = $this->get_holidays_dates();
+            if($date and $holidays) {
+                return in_array($date, $holidays);
+            }
+            return false;
+        }
         
         private function edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration = 0) {
             if(count($disabledDays) == 7) {
@@ -279,11 +303,12 @@ if(!defined('EDWCore')) {
             }
 
             $dateCheck = wp_date('Y-m-d', strtotime($dateCheck . " + 1 days"));
-
+            $is_holiday = $this->check_holidays_date($dateCheck);
             $filterDisabled = date('D', strtotime($dateCheck));
-            if(is_array($disabledDays) and !in_array($filterDisabled, $disabledDays)) {
-              $iteration += 1;
+            if(!$is_holiday and is_array($disabledDays) and !in_array($filterDisabled, $disabledDays)) {
+                $iteration += 1;
             }
+            
             return $this->edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration);
         }
 
@@ -350,7 +375,7 @@ if(!defined('EDWCore')) {
             
             
             if(!$mode) {
-                return;
+                return '';
             }
             /**
              * Hide for out stock products
