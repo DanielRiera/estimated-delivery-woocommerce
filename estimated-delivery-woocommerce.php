@@ -4,20 +4,20 @@
  * Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.3.5
+ * Version: 1.4.0
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 8.3.1
+ * WC tested up to: 8.8.3
  * Required WP: 5.0
- * Tested WP: 6.4.2
+ * Tested WP: 6.3.2
  */
 if(!defined('ABSPATH')) { exit; }
 
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
-define('EDW_Version', '1.3.5');
+define('EDW_Version', '1.4.0');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -470,13 +470,13 @@ if(!defined('EDWCore')) {
                     }else{
                         if($d && !$m && !$y) {
                             //00 - 00 MM, YYYY
-                            $date = date_i18n("j ", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
+                            $date = date_i18n(get_option('_edw_date_format_1_0', 'j'), strtotime($minDate)) . ' - ' . date_i18n(get_option('_edw_date_format_1_1', "j F, Y"), strtotime($maxDate));
                         }elseif($d && $m && !$y) {
                             // 00 MM - 00 MM, YYYY
-                            $date = date_i18n("j F", strtotime($minDate)) . ' - ' . date_i18n("j F, Y", strtotime($maxDate));
+                            $date = date_i18n(get_option('_edw_date_format_2_0', 'j F'), strtotime($minDate)) . ' - ' . date_i18n(get_option('_edw_date_format_2_1', "j F, Y"), strtotime($maxDate));
                         }else{
                             // 00 MM YYYY - 00 MM YYYY
-                            $date = date_i18n("j F Y", strtotime($minDate)) . ' - ' . date_i18n("j F Y", strtotime($maxDate));
+                            $date = date_i18n(get_option('_edw_date_format_3_0',"j F Y"), strtotime($minDate)) . ' - ' . date_i18n(get_option('_edw_date_format_3_1',"j F Y"), strtotime($maxDate));
                         }
                     }
                 }else{

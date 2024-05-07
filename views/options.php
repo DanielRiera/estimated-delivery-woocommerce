@@ -22,6 +22,16 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
             update_option('_edw_max_hour', sanitize_text_field($_POST['_edw_max_hour']));
             update_option('_edw_holidays_dates', sanitize_textarea_field($_POST['_edw_holidays_dates']));
+            
+            //Format dates
+            update_option('_edw_date_format_1_0', sanitize_textarea_field($_POST['_edw_date_format_1_0']));
+            update_option('_edw_date_format_1_1', sanitize_textarea_field($_POST['_edw_date_format_1_1']));
+            update_option('_edw_date_format_2_0', sanitize_textarea_field($_POST['_edw_date_format_2_0']));
+            update_option('_edw_date_format_2_1', sanitize_textarea_field($_POST['_edw_date_format_2_1']));
+            update_option('_edw_date_format_3_0', sanitize_textarea_field($_POST['_edw_date_format_3_0']));
+            update_option('_edw_date_format_3_1', sanitize_textarea_field($_POST['_edw_date_format_3_1']));
+
+
             if(isset($_POST['_edw_relative_dates'])) {
                 update_option('_edw_relative_dates', '1');
             }else{
@@ -268,6 +278,22 @@ table th {
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row"><?=__('Date Formats', 'estimated-delivery-for-woocommerce')?>
+                    <p class="description"><?=__('You can change date format use','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <p><?=__('Same month and year, different day (00 - 00 MM, YYYY)','estimated-delivery-for-woocommerce')?></p>
+                        <input type="text" name="_edw_date_format_1_0" value="<?=get_option('_edw_date_format_1_0', 'j')?>" /> - 
+                        <input type="text" name="_edw_date_format_1_1" value="<?=get_option('_edw_date_format_1_1', 'j F, Y')?>" />
+                        <p><?=__('Same year, different day and month (00 MM - 00 MM, YYYY)','estimated-delivery-for-woocommerce')?></p>
+                        <input type="text" name="_edw_date_format_2_0" value="<?=get_option('_edw_date_format_2_0', 'j F')?>" /> -
+                        <input type="text" name="_edw_date_format_2_1" value="<?=get_option('_edw_date_format_2_1', 'j F, Y')?>" />
+                        <p><?=__('All different (00 MM YYYY - 00 MM YYYY)','estimated-delivery-for-woocommerce')?></p>
+                        <input type="text" name="_edw_date_format_3_0" value="<?=get_option('_edw_date_format_3_0', 'j F Y')?>" /> - 
+                        <input type="text" name="_edw_date_format_3_1" value="<?=get_option('_edw_date_format_3_1', 'j F, Y')?>" />
+                    </td>
+                </tr>
+                <tr valign="top">
                     <th scope="row"><?=__('Estimated or Guaranteed', 'estimated-delivery-for-woocommerce')?>
                         <p class="description"><?=__('The message will change.','estimated-delivery-for-woocommerce')?></p>
                     </th>
@@ -337,7 +363,7 @@ table th {
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?=__('Holidays Dates', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic year. Example: XXXX/31/12','estimated-delivery-for-woocommerce')?></p>
+                    <p class="description"><?=__('Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic year. Example: XXXX/12/31','estimated-delivery-for-woocommerce')?></p>
                     </th>
                     <td>
                         <label>

@@ -1,17 +1,17 @@
 === Estimated Delivery for WooCommerce ===
 Contributors: DanielRiera
 Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
-Tags: estimated delivery, delivery woocommerce
+Tags: estimated delivery, delivery woocommerce, shipping date
 Requires at least: 4.3
-Tested up to: 6.4.2
+Tested up to: 6.5.3
 Requires PHP: 5.0
-Stable tag: 1.3.5
+Stable tag: 1.4.0
  
 == Description ==
 
 Shows the estimated or guaranteed delivery date on each product, select the days on which deliveries are not made.
 
-## 🎉 +1000 active intallations! 🎉
+## 🎉 +2000 active intallations! 🎉
 
 `[estimate_delivery]` shortcode available from 1.1.1 version.
 
@@ -25,9 +25,12 @@ You can add holidays dates with next format, comma separated:
 
 XXXX/12/31,XXXX/01/01,2024/10/02
 
+## Date Format
+From 1.4.0 version you can change date format
 
-Do you need more options?
+## Support
 
+Do you need more options or report a issue?
 [Click here Github](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues)
 
 == Installation ==
@@ -43,6 +46,11 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
  
 == Changelog ==
 
+= 1.4.0 =
+* Format Dates
+* Check compatibility with latest versions WordPress and WooCommerce
+* Change banner and icon :)
+  
 = 1.3.5 =
 * Compatibility with High-Performance order storage (COT)
 * Add new option with Holidays dates, see description for more information
