@@ -5,8 +5,8 @@ Tags: estimated delivery, delivery woocommerce, shipping date
 Requires at least: 4.3
 Tested up to: 6.5.3
 Requires PHP: 5.0
-Stable tag: 1.4.1
-Licence: GPLv2
+Stable tag: 1.4.2
+Licence: GPLv2 or later
 Show estimated / guaranteed delivery, simple and easy
  
 == Description ==
@@ -48,7 +48,7 @@ If you need support open a new ticket on [Github](https://github.com/DanielRiera
  
 == Changelog ==
 
-= 1.4.1 =
+= 1.4.2 =
 * Format Dates
 * Check compatibility with latest versions WordPress and WooCommerce
 * Change banner and icon :)
