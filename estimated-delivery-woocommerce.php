@@ -57,6 +57,9 @@ if(!defined('EDWCore')) {
             add_action( 'dokan_new_product_after_product_tags', array(&$this, 'edw_dokan_compatibility_content_tab') );
             add_action( 'dokan_product_edit_after_product_tags', array(&$this, 'edw_dokan_compatibility_content_tab') );
             
+            //Order
+            add_filter( 'manage_edit-shop_order_columns', array(&$this, 'delivery_date_column_orders'), 20 );
+            add_action( 'manage_shop_order_posts_custom_column' , array(&$this, 'display_date_column_orders'), 20, 2 );
 
             //WCMF Compatiblity Version 1.3.1
             add_action('end_wcfm_products_manage', array(&$this, 'edw_wcmf_content_metabox'), 100, 4);
@@ -75,6 +78,55 @@ if(!defined('EDWCore')) {
                     \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
                 }
             } );
+        }
+
+        function show_column_data_delivery_dates($order) {
+            $result = "";
+            $items = $order->get_items();
+            if($items) {
+                $i = 0;
+                $date_format = get_option('date_format');
+                foreach ($items as $item) {
+                    if($i == 2 and count($items) > 2) {
+                        $result .= sprintf(__("%s more...", 'estimated-delivery-for-woocommerce'), count($items) - 2);
+                        break;
+                    }
+                    $date = $item->get_meta('_edw_date_delivery');
+
+                    if($date){
+                        $date = date_i18n($date_format, strtotime($date));
+                        $result .= "<div title='{$item->get_name()}'>{$date}</div>";
+                    }
+
+                    $i++;
+                }
+            }
+
+            if(!$result) {
+                $result = '-';
+            }
+
+            return $result;
+        }
+
+        function delivery_date_column_orders($columns): array
+        {
+            $columns_result = array();
+            foreach( $columns as $key => $column){
+                $columns_result[$key] = $column;
+                if( $key ==  'order_status' ){
+                    $columns_result['edw_delivery_date'] = __( 'Delivery Dates','estimated-delivery-for-woocommerce');
+                }
+            }
+            return $columns_result;
+        }
+
+        function display_date_column_orders($column, $post_id )
+        {
+            global $the_order;
+            if($column == 'edw_delivery_date') {
+                echo $this->show_column_data_delivery_dates($the_order);
+            }
         }
 
         function edw_wcmf_save_data($product_id, $wcfm_products_form_data) {
@@ -117,13 +169,14 @@ if(!defined('EDWCore')) {
                 echo $this->edw_show_message($post);
             }
         }
-        
+
         function edw_save_custom_order_item_meta_data( $item, $cart_item_key, $values, $order ) {
             $savedOnOrder = get_option('edw_save_date_order', '0');
             if($savedOnOrder != '0') {
                 $date = $this->edw_show_message($values['product_id'], true);
                 if($date and is_array($date) and count($date) == 2) {
                     $item->update_meta_data( $date[0], $date[1] );
+                    $item->update_meta_data('_edw_date_delivery', $date[1] );
                 }
             }
         }
