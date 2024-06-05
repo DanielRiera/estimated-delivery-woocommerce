@@ -3,10 +3,12 @@ Contributors: DanielRiera
 Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: estimated delivery, delivery woocommerce, shipping date
 Requires at least: 4.3
-Tested up to: 6.5.3
+Tested up to: 6.5.4
 Requires PHP: 5.0
-Stable tag: 1.4.3
-Licence: GPLv2 or later
+Stable tag: 1.4.5
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+
 Show estimated / guaranteed delivery, simple and easy
  
 == Description ==
@@ -43,10 +45,23 @@ Do you need more options or report a issue?
  
 == FAQ ==
 
+= Report Issues =
 If you need support open a new ticket on [Github](https://github.com/DanielRiera/estimated-delivery-woocommerce/issues)
+
+= FontAwesome =
+The plugin can add Fontawesome Library if is need
+
+= Icon config =
+
+
 
  
 == Changelog ==
+
+= 1.4.5 =
+* Add Icon support.
+* Add library Fontawesome 6.5.2 if is need.
+* Fix Import CSV product Overwrite.
 
 = 1.4.3 =
 * Fix error with dates, the date show is only today.

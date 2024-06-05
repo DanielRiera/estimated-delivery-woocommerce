@@ -214,7 +214,7 @@ table th {
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?=__('Icon', 'estimated-delivery-for-woocommerce')?>
-                        <p class="description"><?=__('If you want show icon on ','estimated-delivery-for-woocommerce')?></p>
+                        <p class="description"><?=__('You can use always icon, fontawesome, only class name for example: fas fa-truck-moving','estimated-delivery-for-woocommerce')?></p>
                     </th>
                     <td>
                         <label>

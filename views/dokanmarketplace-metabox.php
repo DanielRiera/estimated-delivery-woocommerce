@@ -12,7 +12,7 @@ if($disabledDays == "") { $disabledDays = []; }
 <input type="hidden" value="1" name="_edw_overwrite" /></label>
     <div class="row-padding">
         <table class="form-table">
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_days_block">
                 <th scope="row"><?=__('Days for Delivery', 'estimated-delivery-for-woocommerce')?>
                 </th>
                 <td>
@@ -20,7 +20,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_days" value="<?=get_post_meta($product_id, '_edw_days', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_max_days_block">
                 <th scope="row"><?=__('Max Days for Delivery', 'estimated-delivery-for-woocommerce')?>
                 <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
                 </th>
@@ -29,7 +29,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_max_days" value="<?=get_post_meta($product_id, '_edw_max_days', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_days_out_stock_block">
                 <th scope="row"><?=__('Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
                 </th>
                 <td>
@@ -37,7 +37,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_days_outstock" value="<?=get_post_meta($product_id, '_edw_days_outstock', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_max_days_out_stock_block">
                 <th scope="row"><?=__('Max Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
                 <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
                 </th>
@@ -46,7 +46,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_max_days_outstock" value="<?=get_post_meta($product_id, '_edw_max_days_outstock', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_days_backorders_block">
                 <th scope="row"><?=__('Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
                 </th>
                 <td>
@@ -54,7 +54,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_days_backorders" value="<?=get_post_meta($product_id, '_edw_days_backorders', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_max_days_backorders_block">
                 <th scope="row"><?=__('Max Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
                 <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
                 </th>
@@ -63,7 +63,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     <input type="number" min="0" max="99999" name="_edw_max_days_backorders" value="<?=get_post_meta($product_id, '_edw_max_days_backorders', true)?>" /></label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_mode_block">
                 <th scope="row"><?=__('Estimated or Guaranteed', 'estimated-delivery-for-woocommerce')?>
                     <p class="description"><?=__('The message will change.','estimated-delivery-for-woocommerce')?></p>
                 </th>
@@ -76,7 +76,7 @@ if($disabledDays == "") { $disabledDays = []; }
                     </label>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr valign="top" class="dokan_edw_disabled_days_block">
                 <th scope="row"><?=__('Days disabled', 'estimated-delivery-for-woocommerce')?>
                     <p class="description"><?=__('Select the days that NO shipments are made.','estimated-delivery-for-woocommerce')?></p>
                 </th>

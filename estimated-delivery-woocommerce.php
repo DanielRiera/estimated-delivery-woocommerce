@@ -5,14 +5,15 @@
  * Short Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.4.3
+ * Version: 1.4.5
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
  * WC tested up to: 8.8.3
  * Required WP: 5.0
- * Tested WP: 6.3.2
- * Licence: GPLv2 or later
+ * Tested WP: 6.5.4
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 if(!defined('ABSPATH')) { exit; }
 
@@ -20,7 +21,7 @@ define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
 define('EDW_Fontawesome', get_option('_edw_fontawesome', '0'));
-define('EDW_Version', '1.4.3');
+define('EDW_Version', '1.4.5');
 
 require_once EDW_PATH . 'class.api.php';
 
@@ -379,9 +380,9 @@ if(!defined('EDWCore')) {
             }
             
             if($productActive == '1') {
-                $mode = get_post_meta($product_id,'_edw_mode', true);
+                $mode = get_post_meta($product_id,'_edw_mode', true) || '1';
             }else{
-                $mode = get_option('_edw_mode');
+                $mode = get_option('_edw_mode', '1');
             }
             
             
@@ -453,6 +454,10 @@ if(!defined('EDWCore')) {
                     }
                 }
             }
+
+            //Prevent default
+            $maxDays = intval($maxDays);
+            $disabledDays = $disabledDays ?: [];
 
             $today = wp_date('Y-m-d');
             $minDate = $this->edw_get_working_day_date($disabledDays, $days, $today);
