@@ -22,7 +22,8 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_days_backorders',sanitize_text_field( $_POST['_edw_max_days_backorders'] ));
             update_option('_edw_max_hour', sanitize_text_field($_POST['_edw_max_hour']));
             update_option('_edw_holidays_dates', sanitize_textarea_field($_POST['_edw_holidays_dates']));
-            
+            update_option('_edw_icon', sanitize_text_field($_POST['_edw_icon']));
+
             //Format dates
             update_option('_edw_date_format_1_0', sanitize_textarea_field($_POST['_edw_date_format_1_0']));
             update_option('_edw_date_format_1_1', sanitize_textarea_field($_POST['_edw_date_format_1_1']));
@@ -36,6 +37,12 @@ if(isset($_POST['action'])) {
                 update_option('_edw_relative_dates', '1');
             }else{
                 update_option('_edw_relative_dates', '0');
+            }
+
+            if(isset($_POST['_edw_icon']) and sanitize_text_field($_POST['_edw_icon']) != '' and isset($_POST['_edw_fontawesome'])) {
+                update_option('_edw_fontawesome','1');
+            }else{
+                update_option('_edw_fontawesome','0');
             }
 
             if(isset($_POST['_edw_same_day'])) {
@@ -205,7 +212,24 @@ table th {
                         <input type="checkbox" value="1" name="edw_show_list" <?= get_option('edw_show_list', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
                     </td>
                 </tr>
-                
+                <tr valign="top">
+                    <th scope="row"><?=__('Icon', 'estimated-delivery-for-woocommerce')?>
+                        <p class="description"><?=__('If you want show icon on ','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                            <input type="text" name="_edw_icon" value="<?php echo get_option('_edw_icon', '') ?>" /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('¿Problem with Icon?', 'estimated-delivery-for-woocommerce')?>
+                        <p class="description"><?=__('Load FontAwesome Library.','estimated-delivery-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="_edw_fontawesome" value="1" <?=checked('1', get_option('_edw_fontawesome', '0'))?> /></label>
+                    </td>
+                </tr>
                 <tr valign="top">
                     <th scope="row"><?=__('Maximum Time', 'estimated-delivery-for-woocommerce')?>
                     <p class="description">
