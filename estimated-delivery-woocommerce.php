@@ -232,7 +232,7 @@ if(!defined('EDWCore')) {
                     update_post_meta($post_id, '_edw_overwrite','0');
                 }
             }
-            if(sanitize_text_field( $_POST['_edw_days']) == '') {
+            if(isset($_POST['_edw_days']) and sanitize_text_field( $_POST['_edw_days']) == '') {
                 update_post_meta($post_id, '_edw_overwrite','0');
             }
         }
