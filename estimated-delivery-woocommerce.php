@@ -19,6 +19,7 @@ if(!defined('ABSPATH')) { exit; }
 define('EDW_PATH', dirname(__FILE__).'/');
 define('EDW_POSITION_SHOW', get_option('_edw_position', 'woocommerce_after_add_to_cart_button'));
 define('EDW_USE_JS', get_option('_edw_cache', '0'));
+define('EDW_Fontawesome', get_option('_edw_fontawesome', '0'));
 define('EDW_Version', '1.4.3');
 
 require_once EDW_PATH . 'class.api.php';
@@ -61,6 +62,10 @@ if(!defined('EDWCore')) {
             //WCMF Compatiblity Version 1.3.1
             add_action('end_wcfm_products_manage', array(&$this, 'edw_wcmf_content_metabox'), 100, 4);
             add_action('after_wcfm_products_manage_meta_save', array(&$this, 'edw_wcmf_save_data'), 501, 2);
+
+            if(EDW_Fontawesome == '1') {
+                add_action( 'wp_enqueue_scripts', array($this, 'edw_load_fontawesome') );
+            }
 
             //WCMP Compatiblity
             add_filter( 'wcmp_product_data_tabs', array(&$this, 'edw_wcmp_compatibility_filter_tabs') );
@@ -295,6 +300,10 @@ if(!defined('EDWCore')) {
             }
             return false;
         }
+
+        function edw_load_fontawesome() {
+            wp_enqueue_style( 'edw-fontawesome', plugins_url('assets/fontawesome/all.min.css?v='.EDW_Version, __FILE__));
+        }
         
         private function edw_get_working_day_date($disabledDays, $daysToAdd, $dateCheck, $iteration = 0) {
             if(count($disabledDays) == 7) {
@@ -493,13 +502,15 @@ if(!defined('EDWCore')) {
                 }
                 
                
+                $iconset = get_option('_edw_icon', '');
 
+                $icon_html = $iconset != '' ? '<i class="' . $iconset . '"></i> ' : '';
                 if($mode == "1") {
                     $separed_title = __('Estimated delivery', 'estimated-delivery-for-woocommerce');
-                    $string = '<div class="edw_date">'.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
+                    $string = '<div class="edw_date">'.$icon_html.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }else{
                     $separed_title = __('Guaranteed delivery','estimated-delivery-for-woocommerce');
-                    $string = '<div class="edw_date">'.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
+                    $string = '<div class="edw_date">'.$icon_html.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
                 }
 
                 
