@@ -1,7 +1,19 @@
+
+<script defer src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <?php
 if(!defined('ABSPATH')) { exit; }
 
 /**Actions */
+
+if (isset($_POST['_edw_location_rules'])) {
+    $decoded = json_decode(stripslashes($_POST['_edw_location_rules']), true);
+    if (is_array($decoded)) {
+        update_option('_edw_location_rules', $decoded);
+    }
+}
+
 if(isset($_POST['action'])) {
     if ( (isset($_POST['save_option_nonce']) && wp_verify_nonce(  sanitize_text_field($_POST['save_option_nonce']), 'edw_nonce' )) || (isset($_POST['add_sub_nonce']) && wp_verify_nonce(  sanitize_text_field($_POST['add_sub_nonce']), 'edw_nonce' ) )) {
         if(sanitize_text_field($_POST['action']) == 'save_options') {
@@ -134,295 +146,334 @@ table th {
     min-width:350px
 }
 </style>
-<div class="wrap edwpanel">
-    <h1><?=__('Estimated Delivery for Woocommerce', 'estimated-delivery-for-woocommerce')?></h1>
-    <p><?=__('Show the estimated or guaranteed delivery for the product','estimated-delivery-for-woocommerce')?></p>
+<div class="max-w-6xl mx-auto p-6 space-y-8">
     <?php
-        if($newsletterEstimatedDelivery == '0') { ?>
-            <form class="simple_form form form-vertical" id="new_subscriber" novalidate="novalidate" accept-charset="UTF-8" method="post">
-                <input name="utf8" type="hidden" value="&#x2713;" />
-                <input type="hidden" name="action" value="adsub" />
-                <?php wp_nonce_field( 'edw_nonce', 'add_sub_nonce' ); ?>
-                <h3><?=__('Do you want to receive the latest?','estimated-delivery-for-woocommerce')?></h3>
-                <p><?=__('Thank you very much for using our plugin, if you want to receive the latest news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)', 'estimated-delivery-for-woocommerce')?></p>
-                <div class="form-group email required subscriber_email">
-                    <label class="control-label email required" for="subscriber_email"><abbr title="<?=__('Required', 'estimated-delivery-for-woocommerce')?>"> </abbr></label>
-                    <input class="form-control string email required" type="email" name="e" id="subscriber_email" value="<?=$user->user_email?>" />
-                </div>
-                <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
-                <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
-                <input type="hidden" name="g" value="1,5" />
-                <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
-            <div class="submit-wrapper">
-            <input type="submit" name="commit" value="<?=__('Submit', 'estimated-delivery-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'estimated-delivery-for-woocommerce')?>" />
-            </div>
-        </form>
-    <?php
-        } //END Newsletter
-
-    //Tabs
-    $tab = 'general';
-    if($tab == 'general') { 
-        $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_button');
+    edw_get_delivery_days_by_location()
     ?>
-        <!--Donate button-->
-        <div style="width:30%">
-        <p><?=__('Developing this plugin takes time, so if you like it, we invite you to make a donation so that we can continue developing and updating, adding news, this will always be free.','estimated-delivery-for-woocommerce')?></p>
-            <a href="https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;"><?=__('Make a donation now to help development','estimated-delivery-for-woocommerce')?></a>
+    <!-- Header -->
+    <div class="flex items-center flex-row bg-white shadow rounded-2xl p-6">
+        <div class="mr-4">
+            <img src="<?php echo plugin_dir_url( __DIR__ ); ?>assets/logo.png"  alt="Estimated Delivery Logo"/>
         </div>
-        <br>
+        <div>
+            <h1 class="text-3xl font-bold mb-2"><?php echo __('Estimated Delivery for WooCommerce', 'estimated-delivery-for-woocommerce'); ?></h1>
+            <p class="text-gray-600"><?php echo __('Show the estimated or guaranteed delivery for the product', 'estimated-delivery-for-woocommerce'); ?></p>
+        </div>
+    </div>
 
-        <form method="post">
+    <!-- Tabs Navigation -->
+    <div x-data="{ tab: 'general' }" class="bg-white shadow rounded-2xl">
+        <div class="border-b border-gray-200 px-6 pt-6">
+            <nav class="-mb-px flex space-x-6">
+                <button @click="tab = 'general'" :class="{ 'border-blue-500 text-blue-600': tab === 'general' }" class="cursor-pointer whitespace-nowrap pb-4 px-1 border-b-2 text-sm font-bold">
+                    <?php echo __('General Settings', 'estimated-delivery-for-woocommerce'); ?>
+                </button>
+                <button @click="tab = 'stock'" :class="{ 'border-blue-500 text-blue-600': tab === 'stock' }" class="cursor-pointer whitespace-nowrap pb-4 px-1 border-b-2 text-sm font-bold">
+                    <?php echo __('Stock & Backorders', 'estimated-delivery-for-woocommerce'); ?>
+                </button>
+                <button @click="tab = 'format'" :class="{ 'border-blue-500 text-blue-600': tab === 'format' }" class="cursor-pointer whitespace-nowrap pb-4 px-1 border-b-2 text-sm font-bold">
+                    <?php echo __('Date Format & Appearance', 'estimated-delivery-for-woocommerce'); ?>
+                </button>
+                <button @click="tab = 'other'" :class="{ 'border-blue-500 text-blue-600': tab === 'other' }" class="cursor-pointer whitespace-nowrap pb-4 px-1 border-b-2 text-sm font-bold">
+                    <?php echo __('Other Settings', 'estimated-delivery-for-woocommerce'); ?>
+                </button>
+
+                <button @click="tab = 'location'" :class="{ 'border-blue-500 text-blue-600': tab === 'location' }" class="cursor-pointer whitespace-nowrap pb-4 px-1 border-b-2 text-sm font-bold">
+                    <?php echo __('By Location', 'estimated-delivery-for-woocommerce'); ?>
+                </button>
+            </nav>
+        </div>
+
+        <form method="post" class="p-6 space-y-6">
+            <?php wp_nonce_field('edw_nonce', 'save_option_nonce'); ?>
             <input type="hidden" name="action" value="save_options" />
-            <?php wp_nonce_field( 'edw_nonce', 'save_option_nonce' ); ?>
-            <table class="form-table">
-                <tr valign="top">
-                    <th scope="row"><?=__('Use AJAX', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('If your site use cache system, active this option.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="checkbox" value="1" name="_edw_cache" <?= get_option('_edw_cache', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Delivery same day', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('When you set 0 in any option the estimated delivery is disabled, activate this option to allow setting 0 and displaying the estimated date.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="checkbox" value="1" name="_edw_same_day" <?= get_option('_edw_same_day', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Show date on order (Admin and Customer)', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('If you activate this option, the date will be stored with the order, the customer and you will be able to see the date on each product in the order.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="checkbox" value="1" name="edw_save_date_order" <?= get_option('edw_save_date_order', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Show date Products Lists', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('If you activate this option date show on each product on list, Store, Search, etc. Check style (CSS) for this, bottom on this page.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="checkbox" value="1" name="edw_show_list" <?= get_option('edw_show_list', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Icon', 'estimated-delivery-for-woocommerce')?>
-                        <p class="description"><?=__('You can use always icon, fontawesome, only class name for example: fas fa-truck-moving','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                            <input type="text" name="_edw_icon" value="<?php echo get_option('_edw_icon', '') ?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('¿Problem with Icon?', 'estimated-delivery-for-woocommerce')?>
-                        <p class="description"><?=__('Load FontAwesome Library.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="_edw_fontawesome" value="1" <?=checked('1', get_option('_edw_fontawesome', '0'))?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Maximum Time', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description">
-                        <?= sprintf(__('Maximum time to consider an extra day of shipping (Server time) HH:mm now is %s', 'estimated-delivery-for-woocommerce'), wp_date('Y-m-d H:i'));?>
-                    </p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="time" name="_edw_max_hour" value="<?= get_option('_edw_max_hour', '')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Use Relative Dates', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Only work with current and next week','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="checkbox" value="1" name="_edw_relative_dates" <?= get_option('_edw_relative_dates', '0') == '1' ? 'checked="checked"' : '' ?> /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Days for Delivery', 'estimated-delivery-for-woocommerce')?>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_days" value="<?=get_option('_edw_days', '0')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Max Days for Delivery', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_max_days" value="<?=get_option('_edw_max_days', '0')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_days_outstock" value="<?=get_option('_edw_days_outstock', '')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Max Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_max_days_outstock" value="<?=get_option('_edw_max_days_outstock', '')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_days_backorders" value="<?=get_option('_edw_days_backorders', '')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Max Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Set 0 for disable. If this set more than 0 days, it will show a range.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <input type="number" min="0" max="99999" name="_edw_max_days_backorders" value="<?=get_option('_edw_max_days_backorders', '')?>" /></label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Date Formats', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('You can change date format use','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <p><?=__('Same month and year, different day (00 - 00 MM, YYYY)','estimated-delivery-for-woocommerce')?></p>
-                        <input type="text" name="_edw_date_format_1_0" value="<?=get_option('_edw_date_format_1_0', 'j')?>" /> - 
-                        <input type="text" name="_edw_date_format_1_1" value="<?=get_option('_edw_date_format_1_1', 'j F, Y')?>" />
-                        <p><?=__('Same year, different day and month (00 MM - 00 MM, YYYY)','estimated-delivery-for-woocommerce')?></p>
-                        <input type="text" name="_edw_date_format_2_0" value="<?=get_option('_edw_date_format_2_0', 'j F')?>" /> -
-                        <input type="text" name="_edw_date_format_2_1" value="<?=get_option('_edw_date_format_2_1', 'j F, Y')?>" />
-                        <p><?=__('All different (00 MM YYYY - 00 MM YYYY)','estimated-delivery-for-woocommerce')?></p>
-                        <input type="text" name="_edw_date_format_3_0" value="<?=get_option('_edw_date_format_3_0', 'j F Y')?>" /> - 
-                        <input type="text" name="_edw_date_format_3_1" value="<?=get_option('_edw_date_format_3_1', 'j F, Y')?>" />
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Estimated or Guaranteed', 'estimated-delivery-for-woocommerce')?>
-                        <p class="description"><?=__('The message will change.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <select name="_edw_mode">
-                            <option value="1" <?php selected("1", get_option('_edw_mode', '1')) ?>><?=__('Estimated','estimated-delivery-for-woocommerce');?></option>
-                            <option value="2" <?php selected("2", get_option('_edw_mode')) ?>><?=__('Guaranteed','estimated-delivery-for-woocommerce');?></option>
+
+            <!-- Tab Content -->
+            <div x-show="tab === 'general'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Use AJAX -->
+                <div>
+                    <label class="block font-semibold">
+                        <input type="checkbox" value="1" name="_edw_cache" <?php checked('1', get_option('_edw_cache', '0')); ?> class="mt-2">
+                        <?php echo __('Use AJAX', 'estimated-delivery-for-woocommerce'); ?>
+                    </label>
+                    <p class="text-sm text-gray-500"><?php echo __('If your site use cache system, active this option.', 'estimated-delivery-for-woocommerce'); ?></p>
+
+                </div>
+                <!-- Delivery same day -->
+                <div>
+                    <label class="block font-semibold">
+                        <input type="checkbox" value="1" name="_edw_same_day" <?php checked('1', get_option('_edw_same_day', '0')); ?> class="mt-2">
+                        <?php echo __('Delivery same day', 'estimated-delivery-for-woocommerce'); ?>
+                    </label>
+                    <p class="text-sm text-gray-500"><?php echo __('When you set 0 in any option the estimated delivery is disabled, activate this option to allow setting 0 and displaying the estimated date.', 'estimated-delivery-for-woocommerce'); ?></p>
+
+                </div>
+                <!-- Estimated or Guaranteed -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Estimated or Guaranteed', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <p class="text-sm text-gray-500"><?php echo __('The message will change.', 'estimated-delivery-for-woocommerce'); ?></p>
+                    <select name="_edw_mode" class="input input-bordered w-full mt-2">
+                        <option value="1" <?php selected("1", get_option('_edw_mode', '1')); ?>><?php echo __('Estimated', 'estimated-delivery-for-woocommerce'); ?></option>
+                        <option value="2" <?php selected("2", get_option('_edw_mode')); ?>><?php echo __('Guaranteed', 'estimated-delivery-for-woocommerce'); ?></option>
+                    </select>
+                </div>
+                <!-- Relative Dates -->
+                <div>
+                    <label class="block font-semibold">
+                        <input type="checkbox" value="1" name="_edw_relative_dates" <?php checked('1', get_option('_edw_relative_dates', '0')); ?> class="mt-2">
+                        <?php echo __('Use Relative Dates', 'estimated-delivery-for-woocommerce'); ?>
+                    </label>
+                    <p class="text-sm text-gray-500"><?php echo __('Only work with current and next week', 'estimated-delivery-for-woocommerce'); ?></p>
+
+                </div>
+                <!-- Max Hour -->
+                <div>
+                    <label class="block font-semibold">
+                        <?php echo __('Maximum Time', 'estimated-delivery-for-woocommerce'); ?>
+                    </label>
+                    <p class="text-sm text-gray-500"><?php echo sprintf(__('Maximum time to consider an extra day of shipping (Server time) HH:mm now is %s', 'estimated-delivery-for-woocommerce'), wp_date('Y-m-d H:i')); ?></p>
+                    <input type="time" name="_edw_max_hour" value="<?php echo get_option('_edw_max_hour', '') ?>" class="input input-bordered w-full">
+                </div>
+            </div>
+
+            <div x-show="tab === 'stock'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Days & Max Days per scenario (regular, outstock, backorder) -->
+                <?php
+                $fields = [
+                    ['_edw_days', __('Days for Delivery', 'estimated-delivery-for-woocommerce')],
+                    ['_edw_max_days', __('Max Days for Delivery', 'estimated-delivery-for-woocommerce')],
+                    ['_edw_days_outstock', __('Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')],
+                    ['_edw_max_days_outstock', __('Max Days for Delivery out of stock', 'estimated-delivery-for-woocommerce')],
+                    ['_edw_days_backorders', __('Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')],
+                    ['_edw_max_days_backorders', __('Max Days for Delivery Backorders', 'estimated-delivery-for-woocommerce')],
+                ];
+                foreach ($fields as [$name, $label]) {
+                    $value = get_option($name, '');
+                    echo "<div>
+            <label class=\"block font-semibold\">{$label}</label>
+            <input type=\"number\" name=\"{$name}\" value=\"{$value}\" min=\"0\" max=\"99999\" class=\"input input-bordered w-full\">
+          </div>";
+                }
+                ?>
+            </div>
+
+            <div x-show="tab === 'format'" class="space-y-6">
+                <!-- Date Formats -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Date Formats', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <div class="grid md:grid-cols-2 gap-4 mt-2">
+                        <div>
+                            <p class="text-sm text-gray-500"><?php echo __('Same month and year, different day (00 - 00 MM, YYYY)', 'estimated-delivery-for-woocommerce'); ?></p>
+                            <input type="text" name="_edw_date_format_1_0" value="<?php echo get_option('_edw_date_format_1_0', 'j'); ?>" class="input input-bordered w-full">
+                            <input type="text" name="_edw_date_format_1_1" value="<?php echo get_option('_edw_date_format_1_1', 'j F, Y'); ?>" class="input input-bordered w-full mt-2">
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500"><?php echo __('Same year, different day and month (00 MM - 00 MM, YYYY)', 'estimated-delivery-for-woocommerce'); ?></p>
+                            <input type="text" name="_edw_date_format_2_0" value="<?php echo get_option('_edw_date_format_2_0', 'j F'); ?>" class="input input-bordered w-full">
+                            <input type="text" name="_edw_date_format_2_1" value="<?php echo get_option('_edw_date_format_2_1', 'j F, Y'); ?>" class="input input-bordered w-full mt-2">
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500"><?php echo __('All different (00 MM YYYY - 00 MM YYYY)', 'estimated-delivery-for-woocommerce'); ?></p>
+                            <input type="text" name="_edw_date_format_3_0" value="<?php echo get_option('_edw_date_format_3_0', 'j F Y'); ?>" class="input input-bordered w-full">
+                            <input type="text" name="_edw_date_format_3_1" value="<?php echo get_option('_edw_date_format_3_1', 'j F, Y'); ?>" class="input input-bordered w-full mt-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="tab === 'other'" class="space-y-6">
+                <!-- Disabled Days -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Days disabled', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <p class="text-sm text-gray-500 mb-2"><?php echo __('Select the days that NO shipments are made.', 'estimated-delivery-for-woocommerce'); ?></p>
+                    <div class="flex flex-wrap gap-4">
+                        <?php
+                        $days = [
+                            'Mon' => __('Mon', 'estimated-delivery-for-woocommerce'),
+                            'Tue' => __('Tue', 'estimated-delivery-for-woocommerce'),
+                            'Wed' => __('Wed', 'estimated-delivery-for-woocommerce'),
+                            'Thu' => __('Thu', 'estimated-delivery-for-woocommerce'),
+                            'Fri' => __('Fri', 'estimated-delivery-for-woocommerce'),
+                            'Sat' => __('Sat', 'estimated-delivery-for-woocommerce'),
+                            'Sun' => __('Sun', 'estimated-delivery-for-woocommerce')
+                        ];
+                        foreach ($days as $value => $day) {
+                            echo "<label class=\"flex items-center gap-2\">
+                        <input type=\"checkbox\" name=\"_edw_disabled_days[]\" value=\"{$value}\"" . (in_array($value, $disabledDays) ? ' checked="checked"' : '') . ">
+                        ".$day."</label>";
+                        }
+                        ?>
+                    </div>
+                </div>
+
+                <!-- Icon & FontAwesome -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Icon', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <p class="text-sm text-gray-500"><?php echo __('Only class name (ex: fas fa-truck)', 'estimated-delivery-for-woocommerce'); ?></p>
+                    <input type="text" name="_edw_icon" value="<?php echo get_option('_edw_icon', '') ?>" class="input input-bordered w-full">
+                </div>
+
+                <div>
+                    <label class="block font-semibold"><?php echo __('¿Problem with Icon?', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <input type="checkbox" name="_edw_fontawesome" value="1" <?php checked('1', get_option('_edw_fontawesome', '0')); ?> class="mt-2">
+                </div>
+
+                <!-- Holidays -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Holidays Dates', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <p class="text-sm text-gray-500"><?php echo __('Dates with comma separated, YYYY/MM/DD. Use XXXX for dynamic year (e.g., XXXX/12/31)', 'estimated-delivery-for-woocommerce'); ?></p>
+                    <textarea name="_edw_holidays_dates" rows="6" class="input input-bordered w-full"><?php echo get_option('_edw_holidays_dates', '') ?></textarea>
+                </div>
+
+                <!-- Position -->
+                <div>
+                    <label class="block font-semibold"><?php echo __('Position', 'estimated-delivery-for-woocommerce'); ?></label>
+                    <select name="_edw_position" class="input input-bordered w-full mt-2">
+                        <?php
+                        foreach(EDWCore::$positions as $key => $pos) {
+                            echo '<option value="' . $key . '" ' . selected($key, $currentPosition, false) . '>' . $pos . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div x-show="tab === 'location'" x-data="deliveryConfig()" class="space-y-6">
+                <h2 class="text-xl font-bold mb-2"><?php echo __('Location-based Delivery Settings', 'estimated-delivery-for-woocommerce'); ?></h2>
+                <p class="text-gray-600"><?php echo __('Define custom delivery times per country and state. You can leave the state blank to apply the rule to all states in that country.', 'estimated-delivery-for-woocommerce'); ?></p>
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-1/3">
+                        <label class="block font-semibold"><?php echo __('Country', 'estimated-delivery-for-woocommerce'); ?></label>
+                        <select x-model="newCountry" class="input input-bordered w-full edw-country-select">
+                            <option value=""><?php echo __('Select a country', 'estimated-delivery-for-woocommerce'); ?></option>
+                            <?php foreach (WC()->countries->get_countries() as $code => $label): ?>
+                                <option value="<?php echo esc_attr($code); ?>"><?php echo esc_html($label); ?></option>
+                            <?php endforeach; ?>
                         </select>
-                        </label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Days disabled', 'estimated-delivery-for-woocommerce')?>
-                        <p class="description"><?=__('Select the days that NO shipments are made.','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Mon" <?= (in_array('Mon', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Monday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Tue" <?= (in_array('Tue', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Tuesday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Wed" <?= (in_array('Wed', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Wednesday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Thu" <?= (in_array('Thu', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Thursday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Fri" <?= (in_array('Fri', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Friday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Sat" <?= (in_array('Sat', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Saturday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="_edw_disabled_days[]" value="Sun" <?= (in_array('Sun', $disabledDays) == true) ? 'checked="checked"' : ''; ?> />
-                            <?=__('Sunday','estimated-delivery-for-woocommerce');?>
-                        </label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Position', 'estimated-delivery-for-woocommerce')?></th>
-                    <td>
-                        <label>
-                            <select name="_edw_position">
-                                <?php
-                                    foreach(EDWCore::$positions as $key => $pos) {
-                                        echo '<option value="'.$key.'" '.selected($key,$currentPosition).'>'.$pos.'</option>';
-                                    }
-                                ?>               
-                            </select>
-                        </label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?=__('Holidays Dates', 'estimated-delivery-for-woocommerce')?>
-                    <p class="description"><?=__('Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic year. Example: XXXX/12/31','estimated-delivery-for-woocommerce')?></p>
-                    </th>
-                    <td>
-                        <label>
-                        <textarea name="_edw_holidays_dates" cols="70" rows="20" /><?=get_option('_edw_holidays_dates', '')?></textarea></label>
-                    </td>
-                </tr>
-            </table>
-            <input class="button" type="submit" value="<?=__('Save','estimated-delivery-for-woocommerce');?>">
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <label class="block font-semibold"><?php echo __('State (optional)', 'estimated-delivery-for-woocommerce'); ?></label>
+                        <select x-model="newState" class="input input-bordered w-full edw-state-select">
+                            <option value=""><?php echo __('Select a state (optional)', 'estimated-delivery-for-woocommerce'); ?></option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-1/3 flex items-end">
+                        <button type="button" @click="addRule()" class="btn btn-primary w-full">
+                            <?php echo __('Add Location Rule', 'estimated-delivery-for-woocommerce'); ?>
+                        </button>
+                    </div>
+                </div>
+
+                <template x-for="(states, country) in countries" :key="country">
+                    <div class="border rounded-lg p-4 bg-gray-50">
+                        <h3 class="font-bold text-lg mb-2" x-text="country + ' - ' + (countryLabels[country] || '')"></h3>
+                        <template x-for="(rule, state) in states" :key="state">
+                            <div class="mb-3 p-4 bg-white rounded shadow-sm flex flex-col md:flex-row items-center gap-4">
+                                <div class="flex-1">
+                                    <span class="font-semibold text-sm">
+                                      <template x-if="state === 'default'">
+                                        <span><?php echo __('All states', 'estimated-delivery-for-woocommerce'); ?></span>
+                                      </template>
+                                      <template x-if="state !== 'default'">
+                                        <span x-text="state + ' - ' + (stateLabels[country]?.[state] || '')"></span>
+                                      </template>
+                                    </span>
+                                </div>
+                                <div class="flex flex-col md:flex-row gap-2">
+                                    <label class="flex items-center gap-2">
+                                        <span><?php echo __('Days', 'estimated-delivery-for-woocommerce'); ?></span>
+                                        <input type="number" min="0" max="999" class="input input-sm input-bordered w-20" x-model.number="rule.days">
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <span><?php echo __('Max Days', 'estimated-delivery-for-woocommerce'); ?></span>
+                                        <input type="number" min="0" max="999" class="input input-sm input-bordered w-24" x-model.number="rule.max_days">
+                                    </label>
+                                    <button type="button" @click="removeRule(country, state)" class="text-red-600 hover:underline">
+                                        <?php echo __('Remove', 'estimated-delivery-for-woocommerce'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <div class="pt-4">
+                    <button type="button" @click="save($refs.configInput)" class="cursor-pointer p-5 btn btn-success bg-green-500 hover:bg-green-200">
+                        <?php echo __('Save location-based settings', 'estimated-delivery-for-woocommerce'); ?>
+                    </button>
+                    <input type="hidden" name="_edw_location_rules" x-ref="configInput">
+                </div>
+                <input type="hidden" name="_edw_location_rules" x-ref="configInput">
+            </div>
+
+            <button type="submit" class="btn btn-success bg-green-500 hover:bg-green-200 mt-6"><?php echo __('Save', 'estimated-delivery-for-woocommerce'); ?></button>
         </form>
-        <h2><?=__('Need style?', 'estimated-delivery-for-woocommerce')?></h2>
-        <p><?=__('Enjoy! Paste this CSS code into your Customizer and edit as you like','estimated-delivery-for-woocommerce')?></p>
-<pre>
-.edw_date {
-    margin: 10px 0px;
-    padding: 10px;
-    width: fit-content;
-}
-
-//For product list
-ul.products .edw_date {
-    font-size: 12px;
-    color: #626262;
-}
-//For title checkout and cart
-dt.variation-Estimateddelivery {
-
-}
-//For Value checkout and cart
-dd.variation-Estimateddelivery {
-
-}
-</pre>
-    <?php
-    }
-    
-    ?>
-
+    </div>
 </div>
+
+<script>
+    function deliveryConfig() {
+        return {
+            countries: <?php echo json_encode(get_option('_edw_location_rules', []), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>,
+            countryLabels: <?php echo json_encode(WC()->countries->get_countries()); ?>,
+            stateLabels: <?php echo json_encode(WC()->countries->get_states()); ?>,
+            newCountry: '',
+            newState: '',
+            addRule() {
+                const country = this.newCountry.toUpperCase().trim();
+                const state = this.newState.toUpperCase().trim() || 'default';
+                if (!country) return;
+
+                if (!this.countries[country]) {
+                    this.countries[country] = {};
+                }
+
+                this.countries[country][state] = {
+                    days: 2,
+                    max_days: 5
+                };
+
+                // Trigger reactivity
+                this.countries = Object.assign({}, this.countries);
+
+                this.newCountry = '';
+                this.newState = '';
+            },
+            removeRule(country, state) {
+                delete this.countries[country][state];
+                if (Object.keys(this.countries[country]).length === 0) {
+                    delete this.countries[country];
+                }
+
+                // Trigger reactivity
+                this.countries = Object.assign({}, this.countries);
+            },
+            save(ref) {
+                ref.value = JSON.stringify(this.countries);
+                ref.closest('form').submit();
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const countriesSelect = document.querySelector('.edw-country-select');
+        const statesSelect = document.querySelector('.edw-state-select');
+
+        countriesSelect?.addEventListener('change', function () {
+            const country = this.value;
+            const states = edwStates[country] || {};
+
+            statesSelect.innerHTML = '<option value=""><?php echo __('All states', 'estimated-delivery-for-woocommerce'); ?></option>';
+
+            Object.entries(states).forEach(([code, name]) => {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = name;
+                statesSelect.appendChild(option);
+            });
+        });
+    });
+
+    const edwStates = <?php echo json_encode(WC()->countries->get_states()); ?>;
+</script>
+
+

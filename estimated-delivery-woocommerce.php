@@ -535,6 +535,49 @@ if(!defined('EDWCore')) {
         }
     }
 
+    function edw_get_customer_location() {
+        $country = '';
+        $state = '';
+        if(WC()->session) {
+            if (is_user_logged_in()) {
+                $user_id = get_current_user_id();
+                $country = get_user_meta($user_id, 'shipping_country', true) ?: get_user_meta($user_id, 'billing_country', true);
+                $state   = get_user_meta($user_id, 'shipping_state', true) ?: get_user_meta($user_id, 'billing_state', true);
+            }
+
+            if (!$country) {
+                $country = WC()->session->get('customer_shipping_country');
+                $state   = WC()->session->get('customer_shipping_state');
+            }
+        }
+
+        if (!$country) {
+            $default = get_option('woocommerce_default_country', 'US:CA');
+            [$country, $state] = explode(':', $default);
+        }
+
+        return [
+            'country' => strtoupper($country ?: 'US'),
+            'state'   => strtoupper($state ?: 'default'),
+        ];
+    }
+
+
+    function edw_get_delivery_days_by_location() {
+        $days_by_location = get_option('_edw_days_by_location', []);
+
+        $location = edw_get_customer_location();
+        if (isset($days_by_location[$location["country"]][$location["state"]])) {
+            return intval($days_by_location[$location["country"]][$location["state"]]);
+        } elseif (isset($days_by_location[$location["country"]]['default'])) {
+            return intval($days_by_location[$location["country"]]['default']);
+        }
+
+        // Fallback final
+        return intval(get_option('_edw_days', 0));
+    }
+
+
 }
 $EDWCore = new EDWCore();
 ?>
