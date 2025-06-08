@@ -35,6 +35,7 @@ if(isset($_POST['action'])) {
             update_option('_edw_max_hour', sanitize_text_field($_POST['_edw_max_hour']));
             update_option('_edw_holidays_dates', sanitize_textarea_field($_POST['_edw_holidays_dates']));
             update_option('_edw_icon', sanitize_text_field($_POST['_edw_icon']));
+            update_option('_edw_custom_message', sanitize_text_field($_POST['_edw_custom_message']));
 
             //Format dates
             update_option('_edw_date_format_1_0', sanitize_textarea_field($_POST['_edw_date_format_1_0']));
@@ -117,6 +118,11 @@ $newsletterEstimatedDelivery = get_option('estimated-delivery-newsletter', '0');
 $user = wp_get_current_user();
 $disabledDays = get_option('_edw_disabled_days', []);
 $currentPosition = get_option('_edw_position','woocommerce_after_add_to_cart_button');
+$displayCustom = 'none';
+
+if(get_option('_edw_mode', '1') === '3') {
+    $displayCustom = 'block';
+}
 ?>
 <style>
 form#new_subscriber {
@@ -218,7 +224,7 @@ table th {
                         <option value="3" <?php selected("3", get_option('_edw_mode')); ?>><?php echo __('Custom', 'estimated-delivery-for-woocommerce'); ?></option>
                     </select>
                 </div>
-                <div class="edw_block_custom_message" style="display: none">
+                <div class="edw_block_custom_message" style="display: <?php echo $displayCustom ?>">
                         <label class="block font-semibold"><?php echo __('Custom Message', 'estimated-delivery-for-woocommerce'); ?></label>
                         <p class="text-sm text-gray-500"><?php echo __('The custom message', 'estimated-delivery-for-woocommerce'); ?></p>
                         <input type="text" placeholder="<?php echo __('Custom message', 'estimated-delivery-for-woocommerce') ?>" class="block mt-4 p-4 w-full"  name="_edw_custom_message" value="<?php echo get_option('_edw_custom_message', ''); ?>" />
@@ -403,13 +409,14 @@ table th {
                         </template>
                     </div>
                 </template>
+                <button type="button" @click="save($refs.configInput)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 ease-in-out mt-6 flex items-center justify-center gap-2"><?php echo __('Save All', 'estimated-delivery-for-woocommerce'); ?></button>
                 <div class="pt-4">
                     <input type="hidden" name="_edw_location_rules" x-ref="configInput">
                 </div>
                 <input type="hidden" name="_edw_location_rules" x-ref="configInput">
             </div>
 
-            <button type="button" @click="save($refs.configInput)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 ease-in-out mt-6 flex items-center justify-center gap-2"><?php echo __('Save', 'estimated-delivery-for-woocommerce'); ?></button>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 ease-in-out mt-6 flex items-center justify-center gap-2"><?php echo __('Save', 'estimated-delivery-for-woocommerce'); ?></button>
         </form>
     </div>
 </div>
