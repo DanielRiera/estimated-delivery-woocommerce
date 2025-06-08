@@ -513,9 +513,12 @@ if(!defined('EDWCore')) {
                 if($mode == "1") {
                     $separed_title = __('Estimated delivery', 'estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.$icon_html.sprintf(__('Estimated delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
-                }else{
+                }else if($mode == "2") {
                     $separed_title = __('Guaranteed delivery','estimated-delivery-for-woocommerce');
                     $string = '<div class="edw_date">'.$icon_html.sprintf(__('Guaranteed delivery%s %s','estimated-delivery-for-woocommerce'), $elon, $date).'</div>';
+                }else if($mode == "3") {
+                    $separed_title = get_option('_edw_custom_message', __('Please set a custom message', 'estimated-delivery-for-woocommerce'));
+                    $string = '<div class="edw_date">'.$icon_html.sprintf('%s%s %s', $separed_title, $elon, $date).'</div>';
                 }
 
                 

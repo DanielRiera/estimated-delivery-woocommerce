@@ -215,7 +215,13 @@ table th {
                     <select name="_edw_mode" class="input input-bordered w-full mt-2">
                         <option value="1" <?php selected("1", get_option('_edw_mode', '1')); ?>><?php echo __('Estimated', 'estimated-delivery-for-woocommerce'); ?></option>
                         <option value="2" <?php selected("2", get_option('_edw_mode')); ?>><?php echo __('Guaranteed', 'estimated-delivery-for-woocommerce'); ?></option>
+                        <option value="3" <?php selected("3", get_option('_edw_mode')); ?>><?php echo __('Custom', 'estimated-delivery-for-woocommerce'); ?></option>
                     </select>
+                </div>
+                <div class="edw_block_custom_message" style="display: none">
+                        <label class="block font-semibold"><?php echo __('Custom Message', 'estimated-delivery-for-woocommerce'); ?></label>
+                        <p class="text-sm text-gray-500"><?php echo __('The custom message', 'estimated-delivery-for-woocommerce'); ?></p>
+                        <input type="text" placeholder="<?php echo __('Custom message', 'estimated-delivery-for-woocommerce') ?>" class="block mt-4 p-4 w-full"  name="_edw_custom_message" value="<?php echo get_option('_edw_custom_message', ''); ?>" />
                 </div>
                 <!-- Relative Dates -->
                 <div>
@@ -250,9 +256,9 @@ table th {
                 foreach ($fields as [$name, $label]) {
                     $value = get_option($name, '');
                     echo "<div>
-            <label class=\"block font-semibold\">{$label}</label>
-            <input type=\"number\" name=\"{$name}\" value=\"{$value}\" min=\"0\" max=\"99999\" class=\"input input-bordered w-full\">
-          </div>";
+                            <label class=\"block font-semibold\">{$label}</label>
+                            <input type=\"number\" name=\"{$name}\" value=\"{$value}\" min=\"0\" max=\"99999\" class=\"input input-bordered w-full\">
+                          </div>";
                 }
                 ?>
             </div>
@@ -309,7 +315,7 @@ table th {
                 <!-- Icon & FontAwesome -->
                 <div>
                     <label class="block font-semibold"><?php echo __('Icon', 'estimated-delivery-for-woocommerce'); ?></label>
-                    <p class="text-sm text-gray-500"><?php echo __('Only class name (ex: fas fa-truck)', 'estimated-delivery-for-woocommerce'); ?></p>
+                    <p class="text-sm text-gray-500"><?php echo __('Only class name from FontAwesome (ex: fas fa-truck)', 'estimated-delivery-for-woocommerce'); ?></p>
                     <input type="text" name="_edw_icon" value="<?php echo get_option('_edw_icon', '') ?>" class="input input-bordered w-full">
                 </div>
 
@@ -359,7 +365,7 @@ table th {
                         </select>
                     </div>
                     <div class="w-full md:w-1/3 flex items-end">
-                        <button type="button" @click="addRule()" class="btn btn-primary w-full">
+                        <button type="button" @click="addRule()" class="bg-purple-200 p-3 rounded text-white w-full">
                             <?php echo __('Add Location Rule', 'estimated-delivery-for-woocommerce'); ?>
                         </button>
                     </div>
@@ -398,15 +404,12 @@ table th {
                     </div>
                 </template>
                 <div class="pt-4">
-                    <button type="button" @click="save($refs.configInput)" class="cursor-pointer p-5 btn btn-success bg-green-500 hover:bg-green-200">
-                        <?php echo __('Save location-based settings', 'estimated-delivery-for-woocommerce'); ?>
-                    </button>
                     <input type="hidden" name="_edw_location_rules" x-ref="configInput">
                 </div>
                 <input type="hidden" name="_edw_location_rules" x-ref="configInput">
             </div>
 
-            <button type="submit" class="btn btn-success bg-green-500 hover:bg-green-200 mt-6"><?php echo __('Save', 'estimated-delivery-for-woocommerce'); ?></button>
+            <button type="button" @click="save($refs.configInput)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 ease-in-out mt-6 flex items-center justify-center gap-2"><?php echo __('Save', 'estimated-delivery-for-woocommerce'); ?></button>
         </form>
     </div>
 </div>
@@ -457,7 +460,15 @@ table th {
     document.addEventListener('DOMContentLoaded', function () {
         const countriesSelect = document.querySelector('.edw-country-select');
         const statesSelect = document.querySelector('.edw-state-select');
-
+        const modeMessage = document.querySelector("select[name='_edw_mode']")
+        const custonMessageInput = document.querySelector(".edw_block_custom_message")
+        modeMessage?.addEventListener("change", function() {
+           if(this.value === '3') {
+               custonMessageInput.style.display = 'block';
+           }else{
+               custonMessageInput.style.display = 'none';
+           }
+        });
         countriesSelect?.addEventListener('change', function () {
             const country = this.value;
             const states = edwStates[country] || {};
