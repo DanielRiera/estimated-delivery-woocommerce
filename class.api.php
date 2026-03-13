@@ -10,22 +10,15 @@ if( !class_exists( 'EDW_API' ) ) {
             global $EDWCore;
             $product = sanitize_text_field( $_POST['product'] );
 
-            // if($_POST['type'] == 'variation') {
-            //     $variation = wc_get_product($variation_id);
-            //     $product = $variation->get_parent_id();
-            // }
             $string = $EDWCore->edw_show_message($product);
             if(!$string) {
                 $res = array();
+            }else{
+                $res = array('html' => $string);
             }
-            $res = array(
-                'html' => $string
-            );
             wp_send_json($res);
             wp_die();
         }
-
-        
     }
     $EDW_API = new EDW_API();
 }

@@ -3,9 +3,10 @@ Contributors: DanielRiera
 Donate link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: estimated delivery, delivery woocommerce, shipping date
 Requires at least: 4.3
-Tested up to: 6.5.4
+Tested up to: 6.9.4
+WC tested up to: 10.6.1
 Requires PHP: 5.0
-Stable tag: 1.4.5
+Stable tag: 2.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,8 +15,6 @@ Show estimated / guaranteed delivery, simple and easy
 == Description ==
 
 Shows the estimated or guaranteed delivery date on each product, select the days on which deliveries are not made.
-
-## 🎉 +2000 active intallations! 🎉
 
 `[estimate_delivery]` shortcode available from 1.1.1 version.
 
