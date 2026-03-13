@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) { exit; }
                 <img src="<?php echo esc_url($context['logo_url']); ?>" alt="<?php esc_attr_e('Estimated Delivery Logo', 'estimated-delivery-for-woocommerce'); ?>">
             </div>
             <div>
-                <h1 class="text-3xl font-bold mb-2"><?php esc_html_e('Estimated Delivery for WooCommerce', 'estimated-delivery-for-woocommerce'); ?></h1>
+                <h4 class="!text-3xl font-bold mb-2"><?php esc_html_e('Estimated Delivery for WooCommerce', 'estimated-delivery-for-woocommerce'); ?></h4>
                 <p class="text-gray-600"><?php esc_html_e('Show the estimated or guaranteed delivery for the product', 'estimated-delivery-for-woocommerce'); ?></p>
             </div>
         </div>
