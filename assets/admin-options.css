@@ -1,0 +1,11 @@
+.edw-admin-page .notice {
+    margin-top: 16px;
+}
+
+.edw-admin-page .edw-tab-nav button {
+    background: transparent;
+}
+
+.edw-admin-page .edw-field + .edw-field {
+    margin-top: 0;
+}

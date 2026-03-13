@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: edwoo\n"
-"POT-Creation-Date: 2024-06-06 00:37+0200\n"
-"PO-Revision-Date: 2024-06-06 00:38+0200\n"
+"POT-Creation-Date: 2026-03-14 00:48+0100\n"
+"PO-Revision-Date: 2026-03-14 00:49+0100\n"
 "Last-Translator: Daniel Riera <daniel@taxapro.com>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -10,275 +10,166 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: estimated-delivery-woocommerce.php:151
-#: estimated-delivery-woocommerce.php:211
-#: estimated-delivery-woocommerce.php:267 views/wcfm-metabox.php:21
+#: estimated-delivery-woocommerce.php:158
+#: estimated-delivery-woocommerce.php:227
+#: estimated-delivery-woocommerce.php:298 views/wcfm-metabox.php:21
 msgid "Estimated Delivery"
 msgstr "Entrega Estimada"
 
-#: estimated-delivery-woocommerce.php:273
+#: estimated-delivery-woocommerce.php:332
+#: views/admin/partials/location-tab.php:43
+msgid "All states"
+msgstr "Todas las provincias"
+
+#: estimated-delivery-woocommerce.php:333
+#: views/admin/partials/location-tab.php:22
+msgid "Select a state (optional)"
+msgstr "Seleccione provincia (opcional)"
+
+#: estimated-delivery-woocommerce.php:334
+#: views/admin/partials/location-tab.php:51
+msgid "Days"
+msgstr "Días"
+
+#: estimated-delivery-woocommerce.php:335
+#: views/admin/partials/location-tab.php:55
+msgid "Max Days"
+msgstr "Número máximo de días"
+
+#: estimated-delivery-woocommerce.php:336
+#: views/admin/partials/location-tab.php:59
+msgid "Remove"
+msgstr "Eliminar"
+
+#: estimated-delivery-woocommerce.php:344
 msgid "Disabled, use shortcode"
 msgstr "Deshabilitar, usaré shortcode"
 
-#: estimated-delivery-woocommerce.php:274
+#: estimated-delivery-woocommerce.php:345
 msgid "After cart button"
 msgstr "Después del botón de añadir al carrito"
 
-#: estimated-delivery-woocommerce.php:275
+#: estimated-delivery-woocommerce.php:346
 msgid "Before cart button"
 msgstr "Antes del botón de añadir al carrito"
 
-#: estimated-delivery-woocommerce.php:276
+#: estimated-delivery-woocommerce.php:347
 msgid "After product meta"
 msgstr "Después de la meta del producto"
 
-#: estimated-delivery-woocommerce.php:277
+#: estimated-delivery-woocommerce.php:348
 msgid "Before product summary"
 msgstr "Antes del resumen del producto"
 
-#: estimated-delivery-woocommerce.php:278
+#: estimated-delivery-woocommerce.php:349
 msgid "After product summary"
 msgstr "Después del resumen del producto"
 
-#: estimated-delivery-woocommerce.php:279
+#: estimated-delivery-woocommerce.php:350
 msgid "Product Thumbnail (may not work)"
 msgstr "Debajo de la galería (Puede no funcionar)"
 
-#: estimated-delivery-woocommerce.php:472
+#: estimated-delivery-woocommerce.php:545
 msgid " on"
 msgstr " el"
 
-#: estimated-delivery-woocommerce.php:481
-#: estimated-delivery-woocommerce.php:502
+#: estimated-delivery-woocommerce.php:554
+#: estimated-delivery-woocommerce.php:575
 #, php-format
 msgid "this %s, %s"
 msgstr "este %s, %s"
 
-#: estimated-delivery-woocommerce.php:484
-#: estimated-delivery-woocommerce.php:505
+#: estimated-delivery-woocommerce.php:557
+#: estimated-delivery-woocommerce.php:578
 #, php-format
 msgid "the next %s, %s"
 msgstr "el próximo %s, %s"
 
-#: estimated-delivery-woocommerce.php:514
+#: estimated-delivery-woocommerce.php:587
 msgid "Estimated delivery"
 msgstr "Entrega Estimada"
 
-#: estimated-delivery-woocommerce.php:515
+#: estimated-delivery-woocommerce.php:588
 #, php-format
 msgid "Estimated delivery%s %s"
 msgstr "Entrega estimada%s %s"
 
-#: estimated-delivery-woocommerce.php:517
+#: estimated-delivery-woocommerce.php:590
 msgid "Guaranteed delivery"
 msgstr "Entrega Garantizada"
 
-#: estimated-delivery-woocommerce.php:518
+#: estimated-delivery-woocommerce.php:591
 #, php-format
 msgid "Guaranteed delivery%s %s"
 msgstr "Entrega Garantizada%s %s"
 
-#: views/dokanmarketplace-metabox.php:16 views/metabox-product.php:18
-#: views/options.php:254 views/wcfm-metabox.php:29
-#: views/wcmarketplace-metabox.php:12
-msgid "Days for Delivery"
-msgstr "Días para el envío"
+#: estimated-delivery-woocommerce.php:593
+msgid "Please set a custom message"
+msgstr "Por favor, escribe un mensaje personalizado"
 
-#: views/dokanmarketplace-metabox.php:24 views/metabox-product.php:26
-#: views/options.php:262 views/wcfm-metabox.php:37
-#: views/wcmarketplace-metabox.php:20
-msgid "Max Days for Delivery"
-msgstr "Máximos días para el envio"
+#: includes/admin-options-page.php:80 includes/admin-options-page.php:122
+msgid "You do not have permission to manage these settings."
+msgstr "No tienes permiso para gestionar esta configuración."
 
-#: views/dokanmarketplace-metabox.php:25 views/dokanmarketplace-metabox.php:42
-#: views/dokanmarketplace-metabox.php:59 views/metabox-product.php:27
-#: views/metabox-product.php:44 views/metabox-product.php:61
-#: views/options.php:263 views/options.php:280 views/options.php:297
-#: views/wcfm-metabox.php:38 views/wcfm-metabox.php:55
-#: views/wcfm-metabox.php:72 views/wcmarketplace-metabox.php:21
-#: views/wcmarketplace-metabox.php:38 views/wcmarketplace-metabox.php:55
-msgid "Set 0 for disable. If this set more than 0 days, it will show a range."
-msgstr ""
-"Establecer en 0 para deshabilitar, si es más de 0 se mostrará un rango."
+#: includes/admin-options-page.php:114
+msgid "Settings saved."
+msgstr "Ajustes guardados."
 
-#: views/dokanmarketplace-metabox.php:33 views/metabox-product.php:35
-#: views/options.php:271 views/wcfm-metabox.php:46
-#: views/wcmarketplace-metabox.php:29
-msgid "Days for Delivery out of stock"
-msgstr "Días para el envío (Sin Stock)"
-
-#: views/dokanmarketplace-metabox.php:41 views/metabox-product.php:43
-#: views/options.php:279 views/wcfm-metabox.php:54
-#: views/wcmarketplace-metabox.php:37
-msgid "Max Days for Delivery out of stock"
-msgstr "Máximos días para el envio (Sin Stock)"
-
-#: views/dokanmarketplace-metabox.php:50 views/metabox-product.php:52
-#: views/options.php:288 views/wcfm-metabox.php:63
-#: views/wcmarketplace-metabox.php:46
-msgid "Days for Delivery Backorders"
-msgstr "Días para el envío Backorders"
-
-#: views/dokanmarketplace-metabox.php:58 views/metabox-product.php:60
-#: views/options.php:296 views/wcfm-metabox.php:71
-#: views/wcmarketplace-metabox.php:54
-msgid "Max Days for Delivery Backorders"
-msgstr "Máximos días para el envio Backorders"
-
-#: views/dokanmarketplace-metabox.php:67 views/metabox-product.php:69
-#: views/options.php:321 views/wcfm-metabox.php:80
-#: views/wcmarketplace-metabox.php:63
-msgid "Estimated or Guaranteed"
-msgstr "Estimada o Garantizada"
-
-#: views/dokanmarketplace-metabox.php:68 views/metabox-product.php:70
-#: views/options.php:322 views/wcfm-metabox.php:81
-#: views/wcmarketplace-metabox.php:64
-msgid "The message will change."
-msgstr "Esto cambiará el mensaje."
-
-#: views/dokanmarketplace-metabox.php:73 views/metabox-product.php:75
-#: views/options.php:327 views/wcfm-metabox.php:86
-#: views/wcmarketplace-metabox.php:69
-msgid "Estimated"
-msgstr "Estimada"
-
-#: views/dokanmarketplace-metabox.php:74 views/metabox-product.php:76
-#: views/options.php:328 views/wcfm-metabox.php:87
-#: views/wcmarketplace-metabox.php:70
-msgid "Guaranteed"
-msgstr "Garantizada"
-
-#: views/dokanmarketplace-metabox.php:80 views/metabox-product.php:82
-#: views/options.php:334 views/wcfm-metabox.php:93
-#: views/wcmarketplace-metabox.php:76
-msgid "Days disabled"
-msgstr "Días Deshabilitados"
-
-#: views/dokanmarketplace-metabox.php:81 views/metabox-product.php:83
-#: views/options.php:335 views/wcfm-metabox.php:94
-#: views/wcmarketplace-metabox.php:77
-msgid "Select the days that NO shipments are made."
-msgstr "Selecciona los días que NO se realizan envíos."
-
-#: views/dokanmarketplace-metabox.php:86 views/metabox-product.php:88
-#: views/options.php:340 views/wcfm-metabox.php:99
-#: views/wcmarketplace-metabox.php:82
-msgid "Monday"
-msgstr "Lunes"
-
-#: views/dokanmarketplace-metabox.php:91 views/metabox-product.php:93
-#: views/options.php:345 views/wcfm-metabox.php:104
-#: views/wcmarketplace-metabox.php:87
-msgid "Tuesday"
-msgstr "Martes"
-
-#: views/dokanmarketplace-metabox.php:96 views/metabox-product.php:98
-#: views/options.php:350 views/wcfm-metabox.php:109
-#: views/wcmarketplace-metabox.php:92
-msgid "Wednesday"
-msgstr "Miercoles"
-
-#: views/dokanmarketplace-metabox.php:101 views/metabox-product.php:103
-#: views/options.php:355 views/wcfm-metabox.php:114
-#: views/wcmarketplace-metabox.php:97
-msgid "Thursday"
-msgstr "Jueves"
-
-#: views/dokanmarketplace-metabox.php:106 views/metabox-product.php:108
-#: views/options.php:360 views/wcfm-metabox.php:119
-#: views/wcmarketplace-metabox.php:102
-msgid "Friday"
-msgstr "Viernes"
-
-#: views/dokanmarketplace-metabox.php:111 views/metabox-product.php:113
-#: views/options.php:365 views/wcfm-metabox.php:124
-#: views/wcmarketplace-metabox.php:107
-msgid "Saturday"
-msgstr "Sábado"
-
-#: views/dokanmarketplace-metabox.php:116 views/metabox-product.php:118
-#: views/options.php:370 views/wcfm-metabox.php:129
-#: views/wcmarketplace-metabox.php:112
-msgid "Sunday"
-msgstr "Domingo"
-
-#: views/metabox-product.php:10
-msgid "Overwrite general settings"
-msgstr "Sobreescribir configuración"
-
-#: views/options.php:91
+#: includes/admin-options-page.php:143 includes/admin-options-page.php:151
 msgid "An error has occurred, try again."
 msgstr "Ha ocurrido un error, pruebe de nuevo."
 
-#: views/options.php:95
+#: includes/admin-options-page.php:159
 msgid "Welcome to newsletter :)"
 msgstr "Bienvenid@ al newsletter"
 
-#: views/options.php:138
-msgid "Estimated Delivery for Woocommerce"
-msgstr "Entrega Estimada para WooCommerce"
+#: includes/admin-options-page.php:174 includes/admin-options-page.php:185
+msgid "Security check failed."
+msgstr "La comprobación de seguridad ha fallado."
 
-#: views/options.php:139
-msgid "Show the estimated or guaranteed delivery for the product"
-msgstr "Muestra la entrega estimada o garantizada por cada producto"
+#: includes/admin-options-page.php:205
+msgid "General Settings"
+msgstr "Configuración general"
 
-#: views/options.php:146
-msgid "Do you want to receive the latest?"
-msgstr "¿Quieres recibir lo último?"
+#: includes/admin-options-page.php:206
+msgid "Stock & Backorders"
+msgstr "Existencias y pedidos pendientes"
 
-#: views/options.php:147
-msgid ""
-"Thank you very much for using our plugin, if you want to receive the latest "
-"news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)"
-msgstr ""
-"Muchas gracias por usar nuestro plugin, si quieres recibir noticias, "
-"ofertas, promociones, descuentos...Inscríbete en nuestro boletín. :)"
+#: includes/admin-options-page.php:207
+msgid "Date Format & Appearance"
+msgstr "Formato y aspecto de la fecha"
 
-#: views/options.php:149
-msgid "Required"
-msgstr "Requerido"
+#: includes/admin-options-page.php:208
+msgid "Other Settings"
+msgstr "Otros ajustes"
 
-#: views/options.php:157
-msgid "Submit"
-msgstr "Enviar"
+#: includes/admin-options-page.php:209
+msgid "By Location"
+msgstr "Por localizacion"
 
-#: views/options.php:157
-msgid "Processing"
-msgstr "Procesando"
-
-#: views/options.php:170
-msgid ""
-"Developing this plugin takes time, so if you like it, we invite you to make "
-"a donation so that we can continue developing and updating, adding news, "
-"this will always be free."
-msgstr ""
-"Desarrollar este plugin lleva tiempo, por ello si es de tu agrado le "
-"invitamos a realizar una donación para que podamos seguir desarrollando y "
-"actualizando, añadiendo novedades, esto será siempre gratis."
-
-#: views/options.php:171
-msgid "Make a donation now to help development"
-msgstr "Realiza una donación ahora par ayudar al desarrollo"
-
-#: views/options.php:180
+#: includes/admin-options-page.php:218
 msgid "Use AJAX"
 msgstr "Usar AJAX"
 
-#: views/options.php:181
-msgid "If your site use cache system, active this option."
-msgstr "Si tu sitio usa cache, activa esta opción."
+#: includes/admin-options-page.php:219
+msgid ""
+"Load the delivery message dynamically with AJAX on product pages, product "
+"lists and shortcode output to avoid stale cached HTML."
+msgstr ""
+"Carga el mensaje de entrega de forma dinámica mediante AJAX en las páginas "
+"de productos, las listas de productos y los resultados de los códigos cortos "
+"para evitar que el HTML almacenado en caché quede obsoleto."
 
-#: views/options.php:189
+#: includes/admin-options-page.php:224
 msgid "Delivery same day"
 msgstr "Envío en el mismo día"
 
-#: views/options.php:190
+#: includes/admin-options-page.php:225
 msgid ""
 "When you set 0 in any option the estimated delivery is disabled, activate "
 "this option to allow setting 0 and displaying the estimated date."
@@ -286,56 +177,59 @@ msgstr ""
 "Cuando estableces en 0 cualquier opción de días, se deshabilitan, activa "
 "esta opción para permitir establecer en 0 y mostrar la fecha."
 
-#: views/options.php:198
-msgid "Show date on order (Admin and Customer)"
-msgstr "Mostrar fecha en pedidos (Administrador y Clientes)"
+#: includes/admin-options-page.php:230 views/dokanmarketplace-metabox.php:67
+#: views/metabox-product.php:69 views/wcfm-metabox.php:80
+#: views/wcmarketplace-metabox.php:63
+msgid "Estimated or Guaranteed"
+msgstr "Estimada o Garantizada"
 
-#: views/options.php:199
-msgid ""
-"If you activate this option, the date will be stored with the order, the "
-"customer and you will be able to see the date on each product in the order."
-msgstr ""
-"Si activas esta opción la fecha se almacenará en el pedido, el cliente podrá "
-"ver la fecha en cada producto del pedido."
+#: includes/admin-options-page.php:231 views/dokanmarketplace-metabox.php:68
+#: views/metabox-product.php:70 views/wcfm-metabox.php:81
+#: views/wcmarketplace-metabox.php:64
+msgid "The message will change."
+msgstr "Esto cambiará el mensaje."
 
-#: views/options.php:207
-msgid "Show date Products Lists"
-msgstr "Mostrar fecha en listado de productos"
+#: includes/admin-options-page.php:233 views/dokanmarketplace-metabox.php:73
+#: views/metabox-product.php:75 views/wcfm-metabox.php:86
+#: views/wcmarketplace-metabox.php:69
+msgid "Estimated"
+msgstr "Estimada"
 
-#: views/options.php:208
-msgid ""
-"If you activate this option date show on each product on list, Store, "
-"Search, etc. Check style (CSS) for this, bottom on this page."
-msgstr ""
-"Si activas esta opción la fecha se mostrará en el listado de productos, "
-"búsquedas, etc. Compruebe los estilos CSS para esto, mira al final de esta "
-"página."
+#: includes/admin-options-page.php:234 views/dokanmarketplace-metabox.php:74
+#: views/metabox-product.php:76 views/wcfm-metabox.php:87
+#: views/wcmarketplace-metabox.php:70
+msgid "Guaranteed"
+msgstr "Garantizada"
 
-#: views/options.php:216
-msgid "Icon"
-msgstr "Icono"
+#: includes/admin-options-page.php:235
+msgid "Custom"
+msgstr "Personalizado"
 
-#: views/options.php:217
-msgid ""
-"You can use always icon, fontawesome, only class name for example: fas fa-"
-"truck-moving"
-msgstr ""
-"Puedes usar un icono, FontAwesome, use la clase del icono por ejemplo: fas "
-"fa-truck-moving"
+#: includes/admin-options-page.php:241
+msgid "Custom Message"
+msgstr "Mensaje personalizado"
 
-#: views/options.php:225
-msgid "¿Problem with Icon?"
-msgstr "¿Problema con el icono?"
+#: includes/admin-options-page.php:242
+msgid "The custom message"
+msgstr "El mensaje personalizado"
 
-#: views/options.php:226
-msgid "Load FontAwesome Library."
-msgstr "Cargue la librería FontAwesome."
+#: includes/admin-options-page.php:243
+msgid "Custom message"
+msgstr "Mensaje personalizado"
 
-#: views/options.php:234
+#: includes/admin-options-page.php:249
+msgid "Use Relative Dates"
+msgstr "Usar fechas relativas"
+
+#: includes/admin-options-page.php:250
+msgid "Only work with current and next week"
+msgstr "Solo funciona con la semana actual y la próxima"
+
+#: includes/admin-options-page.php:255
 msgid "Maximum Time"
 msgstr "Tiempo máximo"
 
-#: views/options.php:236
+#: includes/admin-options-page.php:256
 #, php-format
 msgid ""
 "Maximum time to consider an extra day of shipping (Server time) HH:mm now is "
@@ -344,62 +238,327 @@ msgstr ""
 "Hora máxima que se considera sumar un día más al envío (Hora del servidor) "
 "HH:mm ahora son %s"
 
-#: views/options.php:245
-msgid "Use Relative Dates"
-msgstr "Usar fechas relativas"
+#: includes/admin-options-page.php:263 views/dokanmarketplace-metabox.php:16
+#: views/metabox-product.php:18 views/wcfm-metabox.php:29
+#: views/wcmarketplace-metabox.php:12
+msgid "Days for Delivery"
+msgstr "Días para el envío"
 
-#: views/options.php:246
-msgid "Only work with current and next week"
-msgstr "Solo funciona con la semana actual y la próxima"
+#: includes/admin-options-page.php:264 views/dokanmarketplace-metabox.php:24
+#: views/metabox-product.php:26 views/wcfm-metabox.php:37
+#: views/wcmarketplace-metabox.php:20
+msgid "Max Days for Delivery"
+msgstr "Máximos días para el envio"
 
-#: views/options.php:305
-msgid "Date Formats"
-msgstr "Formato de fechas"
+#: includes/admin-options-page.php:265 views/dokanmarketplace-metabox.php:33
+#: views/metabox-product.php:35 views/wcfm-metabox.php:46
+#: views/wcmarketplace-metabox.php:29
+msgid "Days for Delivery out of stock"
+msgstr "Días para el envío (Sin Stock)"
 
-#: views/options.php:306
-msgid "You can change date format use"
-msgstr "Puedes cambiar el formato de fecha que usa el plugin"
+#: includes/admin-options-page.php:266 views/dokanmarketplace-metabox.php:41
+#: views/metabox-product.php:43 views/wcfm-metabox.php:54
+#: views/wcmarketplace-metabox.php:37
+msgid "Max Days for Delivery out of stock"
+msgstr "Máximos días para el envio (Sin Stock)"
 
-#: views/options.php:309
+#: includes/admin-options-page.php:267 views/dokanmarketplace-metabox.php:50
+#: views/metabox-product.php:52 views/wcfm-metabox.php:63
+#: views/wcmarketplace-metabox.php:46
+msgid "Days for Delivery Backorders"
+msgstr "Días para el envío Backorders"
+
+#: includes/admin-options-page.php:268 views/dokanmarketplace-metabox.php:58
+#: views/metabox-product.php:60 views/wcfm-metabox.php:71
+#: views/wcmarketplace-metabox.php:54
+msgid "Max Days for Delivery Backorders"
+msgstr "Máximos días para el envio Backorders"
+
+#: includes/admin-options-page.php:275
 msgid "Same month and year, different day (00 - 00 MM, YYYY)"
 msgstr "Mismo mes y año, diferente día (00 - 00 MM, YYYY)"
 
-#: views/options.php:312
+#: includes/admin-options-page.php:282
 msgid "Same year, different day and month (00 MM - 00 MM, YYYY)"
 msgstr "Mismo año, diferente día y mes (00 MM - 00 MM, YYYY)"
 
-#: views/options.php:315
+#: includes/admin-options-page.php:289
 msgid "All different (00 MM YYYY - 00 MM YYYY)"
 msgstr "Todo diferente (00 MM YYYY - 00 MM YYYY)"
 
-#: views/options.php:375
+#: includes/admin-options-page.php:303
+msgid "Icon"
+msgstr "Icono"
+
+#: includes/admin-options-page.php:304
+msgid "Only class name from FontAwesome (ex: fas fa-truck)"
+msgstr "Solo el nombre de la clase de FontAwesome (p. ej.: fas fa-truck)"
+
+#: includes/admin-options-page.php:309
+msgid "Problem with Icon?"
+msgstr "¿Algún problema con el icono?"
+
+#: includes/admin-options-page.php:310
+msgid "Load Font Awesome on frontend"
+msgstr "Cargar Font Awesome en la interfaz de usuario"
+
+#: includes/admin-options-page.php:315
+msgid "Save date on order?"
+msgstr "¿Guardar la fecha en el pedido?"
+
+#: includes/admin-options-page.php:316
+msgid "Add the delivery date to the order item metadata."
+msgstr "Añade la fecha de entrega a los metadatos de la línea de pedido."
+
+#: includes/admin-options-page.php:321
+msgid "Show on loops?"
+msgstr "¿Reproducir en bucle?"
+
+#: includes/admin-options-page.php:322
+msgid "Show estimated delivery on shop, archive and search results."
+msgstr ""
+"Mostrar la fecha de entrega estimada en la tienda, el archivo y los "
+"resultados de búsqueda."
+
+#: includes/admin-options-page.php:327
+msgid "Holidays dates"
+msgstr "Fechas de las vacaciones"
+
+#: includes/admin-options-page.php:328
+msgid "Add holidays separated by commas. Use XXXX for dynamic year."
+msgstr ""
+"Añade los días festivos separados por comas. Utiliza XXXX para indicar un "
+"año variable."
+
+#: includes/admin-options-page.php:334
 msgid "Position"
 msgstr "Posición"
 
-#: views/options.php:389
-msgid "Holidays Dates"
-msgstr "Fecha de Vacaciones"
+#: includes/admin-options-page.php:335
+msgid "Select where the message will be displayed on the product page."
+msgstr "Selecciona dónde se mostrará el mensaje en la página del producto."
 
-#: views/options.php:390
-msgid ""
-"Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic year. "
-"Example: XXXX/12/31"
-msgstr ""
-"Fechas separadas por coma, YYYY/MM/DD, para año dinámico usa XXXX, por "
-"ejemplo: XXXX/12/31"
+#: includes/admin-options-page.php:343
+msgid "Mon"
+msgstr "Lun"
 
-#: views/options.php:398
+#: includes/admin-options-page.php:344
+msgid "Tue"
+msgstr "Mar"
+
+#: includes/admin-options-page.php:345
+msgid "Wed"
+msgstr "Mie"
+
+#: includes/admin-options-page.php:346
+msgid "Thu"
+msgstr "Jue"
+
+#: includes/admin-options-page.php:347
+msgid "Fri"
+msgstr "Vie"
+
+#: includes/admin-options-page.php:348
+msgid "Sat"
+msgstr "Sab"
+
+#: includes/admin-options-page.php:349
+msgid "Sun"
+msgstr "Dom"
+
+#: views/admin/options-page.php:17
+msgid "Estimated Delivery for WooCommerce"
+msgstr "Plazo de entrega estimado para WooCommerce"
+
+#: views/admin/options-page.php:18
+msgid "Show the estimated or guaranteed delivery for the product"
+msgstr "Muestra la entrega estimada o garantizada por cada producto"
+
+#: views/admin/options-page.php:59
 msgid "Save"
 msgstr "Guardar"
 
-#: views/options.php:400
-msgid "Need style?"
-msgstr "Necesitas dar estilos?"
+#: views/admin/partials/format-tab.php:5
+#, fuzzy
+#| msgid "Date Format & Appearance"
+msgid "Date Formats"
+msgstr "Formatos de fecha"
 
-#: views/options.php:401
-msgid "Enjoy! Paste this CSS code into your Customizer and edit as you like"
+#: views/admin/partials/location-tab.php:5
+#, fuzzy
+msgid "Location based rules"
+msgstr "Reglas basadas en la ubicación"
+
+#: views/admin/partials/location-tab.php:6
+#, fuzzy
+msgid ""
+"Configure delivery times per country and state. You can leave the state "
+"blank to apply the rule to all states in that country."
 msgstr ""
-"A disfrutar, pega este código en el personalizador CSS y edítalo a tu gusto"
+"Configura los plazos de entrega por país y provincia. Puedes dejar el campo "
+"de la provincia en blanco para que la regla se aplique a todas las "
+"provincias de ese país."
+
+#: views/admin/partials/location-tab.php:11
+msgid "Country"
+msgstr "País"
+
+#: views/admin/partials/location-tab.php:13
+msgid "Select a country"
+msgstr "Selecciona un país"
+
+#: views/admin/partials/location-tab.php:20
+#, fuzzy
+#| msgid "Select a state (optional)"
+msgid "State (optional)"
+msgstr "Estado (opcional)"
+
+#: views/admin/partials/location-tab.php:27
+msgid "Add Location Rule"
+msgstr "Añadir regla de localización"
+
+#: views/admin/partials/other-tab.php:5 views/dokanmarketplace-metabox.php:80
+#: views/metabox-product.php:82 views/wcfm-metabox.php:93
+#: views/wcmarketplace-metabox.php:76
+msgid "Days disabled"
+msgstr "Días Deshabilitados"
+
+#: views/admin/partials/other-tab.php:6 views/dokanmarketplace-metabox.php:81
+#: views/metabox-product.php:83 views/wcfm-metabox.php:94
+#: views/wcmarketplace-metabox.php:77
+msgid "Select the days that NO shipments are made."
+msgstr "Selecciona los días que NO se realizan envíos."
+
+#: views/dokanmarketplace-metabox.php:25 views/dokanmarketplace-metabox.php:42
+#: views/dokanmarketplace-metabox.php:59 views/metabox-product.php:27
+#: views/metabox-product.php:44 views/metabox-product.php:61
+#: views/wcfm-metabox.php:38 views/wcfm-metabox.php:55
+#: views/wcfm-metabox.php:72 views/wcmarketplace-metabox.php:21
+#: views/wcmarketplace-metabox.php:38 views/wcmarketplace-metabox.php:55
+msgid "Set 0 for disable. If this set more than 0 days, it will show a range."
+msgstr ""
+"Establecer en 0 para deshabilitar, si es más de 0 se mostrará un rango."
+
+#: views/dokanmarketplace-metabox.php:86 views/metabox-product.php:88
+#: views/wcfm-metabox.php:99 views/wcmarketplace-metabox.php:82
+msgid "Monday"
+msgstr "Lunes"
+
+#: views/dokanmarketplace-metabox.php:91 views/metabox-product.php:93
+#: views/wcfm-metabox.php:104 views/wcmarketplace-metabox.php:87
+msgid "Tuesday"
+msgstr "Martes"
+
+#: views/dokanmarketplace-metabox.php:96 views/metabox-product.php:98
+#: views/wcfm-metabox.php:109 views/wcmarketplace-metabox.php:92
+msgid "Wednesday"
+msgstr "Miercoles"
+
+#: views/dokanmarketplace-metabox.php:101 views/metabox-product.php:103
+#: views/wcfm-metabox.php:114 views/wcmarketplace-metabox.php:97
+msgid "Thursday"
+msgstr "Jueves"
+
+#: views/dokanmarketplace-metabox.php:106 views/metabox-product.php:108
+#: views/wcfm-metabox.php:119 views/wcmarketplace-metabox.php:102
+msgid "Friday"
+msgstr "Viernes"
+
+#: views/dokanmarketplace-metabox.php:111 views/metabox-product.php:113
+#: views/wcfm-metabox.php:124 views/wcmarketplace-metabox.php:107
+msgid "Saturday"
+msgstr "Sábado"
+
+#: views/dokanmarketplace-metabox.php:116 views/metabox-product.php:118
+#: views/wcfm-metabox.php:129 views/wcmarketplace-metabox.php:112
+msgid "Sunday"
+msgstr "Domingo"
+
+#: views/metabox-product.php:10
+msgid "Overwrite general settings"
+msgstr "Sobreescribir configuración"
+
+#~ msgid "Do you want to receive the latest?"
+#~ msgstr "¿Quieres recibir lo último?"
+
+#~ msgid ""
+#~ "Thank you very much for using our plugin, if you want to receive the "
+#~ "latest news, offers, promotions, discounts, etc ... Sign up for our "
+#~ "newsletter. :)"
+#~ msgstr ""
+#~ "Muchas gracias por usar nuestro plugin, si quieres recibir noticias, "
+#~ "ofertas, promociones, descuentos...Inscríbete en nuestro boletín. :)"
+
+#~ msgid "Required"
+#~ msgstr "Requerido"
+
+#~ msgid "Submit"
+#~ msgstr "Enviar"
+
+#~ msgid "Processing"
+#~ msgstr "Procesando"
+
+#~ msgid ""
+#~ "Developing this plugin takes time, so if you like it, we invite you to "
+#~ "make a donation so that we can continue developing and updating, adding "
+#~ "news, this will always be free."
+#~ msgstr ""
+#~ "Desarrollar este plugin lleva tiempo, por ello si es de tu agrado le "
+#~ "invitamos a realizar una donación para que podamos seguir desarrollando y "
+#~ "actualizando, añadiendo novedades, esto será siempre gratis."
+
+#~ msgid "Make a donation now to help development"
+#~ msgstr "Realiza una donación ahora par ayudar al desarrollo"
+
+#~ msgid "If your site use cache system, active this option."
+#~ msgstr "Si tu sitio usa cache, activa esta opción."
+
+#~ msgid "Show date on order (Admin and Customer)"
+#~ msgstr "Mostrar fecha en pedidos (Administrador y Clientes)"
+
+#~ msgid ""
+#~ "If you activate this option, the date will be stored with the order, the "
+#~ "customer and you will be able to see the date on each product in the "
+#~ "order."
+#~ msgstr ""
+#~ "Si activas esta opción la fecha se almacenará en el pedido, el cliente "
+#~ "podrá ver la fecha en cada producto del pedido."
+
+#~ msgid "Show date Products Lists"
+#~ msgstr "Mostrar fecha en listado de productos"
+
+#~ msgid ""
+#~ "If you activate this option date show on each product on list, Store, "
+#~ "Search, etc. Check style (CSS) for this, bottom on this page."
+#~ msgstr ""
+#~ "Si activas esta opción la fecha se mostrará en el listado de productos, "
+#~ "búsquedas, etc. Compruebe los estilos CSS para esto, mira al final de "
+#~ "esta página."
+
+#~ msgid ""
+#~ "You can use always icon, fontawesome, only class name for example: fas fa-"
+#~ "truck-moving"
+#~ msgstr ""
+#~ "Puedes usar un icono, FontAwesome, use la clase del icono por ejemplo: "
+#~ "fas fa-truck-moving"
+
+#~ msgid "You can change date format use"
+#~ msgstr "Puedes cambiar el formato de fecha que usa el plugin"
+
+#~ msgid ""
+#~ "Dates with comma separated, YYYY/MM/DD, on YEAR use XXXX for dynamic "
+#~ "year. Example: XXXX/12/31"
+#~ msgstr ""
+#~ "Fechas separadas por coma, YYYY/MM/DD, para año dinámico usa XXXX, por "
+#~ "ejemplo: XXXX/12/31"
+
+#~ msgid "Need style?"
+#~ msgstr "Necesitas dar estilos?"
+
+#~ msgid "Enjoy! Paste this CSS code into your Customizer and edit as you like"
+#~ msgstr ""
+#~ "A disfrutar, pega este código en el personalizador CSS y edítalo a tu "
+#~ "gusto"
 
 #~ msgid "By clicking send you accept our "
 #~ msgstr "Haciendo clic aceptas nuestra "

@@ -5,13 +5,13 @@
  * Short Description: Show estimated / guaranteed delivery, simple and easy
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
- * Version: 1.4.5
+ * Version: 2.0.0
  * Text Domain: estimated-delivery-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 8.8.3
+ * WC tested up to: 10.6.1
  * Required WP: 5.0
- * Tested WP: 6.5.4
+ * Tested WP: 6.9.4
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
@@ -24,6 +24,7 @@ define('EDW_Fontawesome', get_option('_edw_fontawesome', '0'));
 define('EDW_Version', '1.4.5');
 
 require_once EDW_PATH . 'class.api.php';
+require_once EDW_PATH . 'includes/admin-options-page.php';
 
 if(!defined('EDWCore')) {
     class EDWCore {
@@ -41,7 +42,9 @@ if(!defined('EDWCore')) {
         );
 
         function __construct(){
-            add_action('admin_menu', array(&$this, 'edw_menu'));
+                add_action('admin_menu', array(&$this, 'edw_menu'));
+                add_action('admin_init', array(&$this, 'edw_admin_handle_options_request'));
+                add_action('admin_enqueue_scripts', array(&$this, 'edw_admin_enqueue_assets'));
             add_action('plugins_loaded', array(&$this, 'edw_load_textdomain'));
             
             if(EDW_USE_JS == '0') {
@@ -120,6 +123,10 @@ if(!defined('EDWCore')) {
             global $post;
             $showOnList = get_option('edw_show_list', '0');
             if($showOnList == '1') {
+                if (EDW_USE_JS == '1') {
+                    echo $this->edw_render_ajax_placeholder($post ? $post->ID : 0);
+                    return;
+                }
                 echo $this->edw_show_message($post);
             }
         }
@@ -204,7 +211,16 @@ if(!defined('EDWCore')) {
                 'product' => $product,                
             ), $atts, 'estimate_delivery' );
 
-            return $this->edw_show_message($product);
+            $shortcode_product = $atts['product'];
+            if (is_object($shortcode_product) && method_exists($shortcode_product, 'get_id')) {
+                $shortcode_product = $shortcode_product->get_id();
+            }
+
+            if (EDW_USE_JS == '1') {
+                return $this->edw_render_ajax_placeholder(intval($shortcode_product));
+            }
+
+            return $this->edw_show_message($shortcode_product);
         }
         
         function edw_create_metabox_products() {
@@ -252,7 +268,13 @@ if(!defined('EDWCore')) {
         }
 
         function edw_load_style() {
-            if(is_product() === false) { return; }
+            $should_load = is_product();
+
+            if (EDW_USE_JS == '1') {
+                $should_load = $should_load || is_shop() || is_product_taxonomy() || is_search();
+            }
+
+            if($should_load === false) { return; }
             wp_enqueue_script( 'edw-scripts', plugins_url('assets/edw_scripts.js?edw=true&v='.EDW_Version, __FILE__), array('jquery'));
 
             wp_localize_script( 'edw-scripts', 'edwConfig', array(
@@ -260,11 +282,60 @@ if(!defined('EDWCore')) {
             ) );
         }
 
+        function edw_render_ajax_placeholder($product_id) {
+            $product_id = intval($product_id);
+            if (!$product_id) {
+                return '';
+            }
+
+            return '<div class="edw_date edw_date_placeholder" data-product-id="' . esc_attr($product_id) . '" style="display:none"></div>';
+        }
+
         function edw_load_textdomain(){
             load_plugin_textdomain( 'estimated-delivery-for-woocommerce', false, basename( dirname( __FILE__ ) ) . '/languages' );
         }
         function edw_menu() {
             add_submenu_page('woocommerce',__('Estimated Delivery','estimated-delivery-for-woocommerce'),__('Estimated Delivery','estimated-delivery-for-woocommerce') , 'manage_options', 'edw-options', array($this, 'edw_view_page_options'));
+        }
+
+        function edw_admin_handle_options_request() {
+            if (!is_admin()) {
+                return;
+            }
+
+            $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+            if ($page !== 'edw-options') {
+                return;
+            }
+
+            $notice = edw_admin_handle_options_page_request();
+            if ($notice) {
+                edw_admin_set_options_notice($notice);
+            }
+        }
+
+        function edw_admin_enqueue_assets($hook) {
+            if ($hook !== 'woocommerce_page_edw-options') {
+                return;
+            }
+
+            wp_enqueue_script('edw-admin-tailwind', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4', [], EDW_Version, false);
+            wp_enqueue_script('edw-admin-alpine', 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js', [], EDW_Version, true);
+            wp_enqueue_style('edw-admin-options', plugins_url('assets/admin-options.css?v=' . EDW_Version, __FILE__));
+            wp_enqueue_script('edw-admin-options', plugins_url('assets/admin-options.js?v=' . EDW_Version, __FILE__), [], EDW_Version, true);
+
+            wp_localize_script('edw-admin-options', 'edwAdminOptionsData', [
+                'locationRules' => get_option('_edw_location_rules', []),
+                'countries' => WC()->countries->get_countries(),
+                'states' => WC()->countries->get_states(),
+                'strings' => [
+                    'allStates' => __('All states', 'estimated-delivery-for-woocommerce'),
+                    'selectState' => __('Select a state (optional)', 'estimated-delivery-for-woocommerce'),
+                    'days' => __('Days', 'estimated-delivery-for-woocommerce'),
+                    'maxDays' => __('Max Days', 'estimated-delivery-for-woocommerce'),
+                    'remove' => __('Remove', 'estimated-delivery-for-woocommerce'),
+                ],
+            ]);
         }
 
         function edw_view_page_options() {
@@ -280,8 +351,8 @@ if(!defined('EDWCore')) {
             );
 
             self::$positions = apply_filters( 'edw_positions', self::$positions );
-
-            require_once(EDW_PATH . 'views/options.php');
+            $context = edw_admin_build_options_page_context(self::$positions);
+            require_once(EDW_PATH . 'views/admin/options-page.php');
         }
 
         private function get_holidays_dates() {
@@ -433,13 +504,15 @@ if(!defined('EDWCore')) {
                     $disabledDays = get_post_meta($product_id,'_edw_disabled_days', true);
                     
                 }else{
-                    $days = intval(get_option('_edw_days'));
-                    $maxDays = intval(get_option('_edw_max_days'));
+                    $locationRule = edw_get_delivery_days_by_location();
+                    $days = intval($locationRule['days']);
+                    $maxDays = intval($locationRule['max_days']);
                     $disabledDays = get_option('_edw_disabled_days');
                 }
 
             }
-            
+
+
             if($days == 0 and get_option('_edw_same_day', '0') == '0') {
                 return '';
             }
@@ -541,43 +614,91 @@ if(!defined('EDWCore')) {
     function edw_get_customer_location() {
         $country = '';
         $state = '';
-        if(WC()->session) {
-            if (is_user_logged_in()) {
-                $user_id = get_current_user_id();
-                $country = get_user_meta($user_id, 'shipping_country', true) ?: get_user_meta($user_id, 'billing_country', true);
-                $state   = get_user_meta($user_id, 'shipping_state', true) ?: get_user_meta($user_id, 'billing_state', true);
-            }
+
+        if (is_user_logged_in()) {
+            $user_id = get_current_user_id();
+            $country = get_user_meta($user_id, 'shipping_country', true);
+            $state = get_user_meta($user_id, 'shipping_state', true);
 
             if (!$country) {
-                $country = WC()->session->get('customer_shipping_country');
-                $state   = WC()->session->get('customer_shipping_state');
+                $country = get_user_meta($user_id, 'billing_country', true);
+                $state = get_user_meta($user_id, 'billing_state', true);
             }
         }
 
-        if (!$country) {
-            $default = get_option('woocommerce_default_country', 'US:CA');
-            [$country, $state] = explode(':', $default);
+        if (!$country && function_exists('WC') && WC() && WC()->customer) {
+            $country = WC()->customer->get_shipping_country();
+            $state = WC()->customer->get_shipping_state();
+
+            if (!$country) {
+                $country = WC()->customer->get_billing_country();
+                $state = WC()->customer->get_billing_state();
+            }
+        }
+
+        if (!$country && function_exists('WC') && WC() && WC()->session) {
+            $country = WC()->session->get('customer_shipping_country');
+            $state = WC()->session->get('customer_shipping_state');
         }
 
         return [
-            'country' => strtoupper($country ?: 'US'),
-            'state'   => strtoupper($state ?: 'default'),
+            'country' => strtoupper(trim((string) $country)),
+            'state'   => strtoupper(trim((string) $state)),
+        ];
+    }
+
+
+    function edw_normalize_delivery_rule($rule) {
+        if (!is_array($rule)) {
+            return null;
+        }
+
+        return [
+            'days' => isset($rule['days']) ? intval($rule['days']) : 0,
+            'max_days' => isset($rule['max_days']) ? intval($rule['max_days']) : 0,
+        ];
+    }
+
+
+    function edw_get_default_delivery_rule() {
+        return [
+            'days' => intval(get_option('_edw_days', 0)),
+            'max_days' => intval(get_option('_edw_max_days', 0)),
         ];
     }
 
 
     function edw_get_delivery_days_by_location() {
-        $days_by_location = get_option('_edw_days_by_location', []);
-
-        $location = edw_get_customer_location();
-        if (isset($days_by_location[$location["country"]][$location["state"]])) {
-            return intval($days_by_location[$location["country"]][$location["state"]]);
-        } elseif (isset($days_by_location[$location["country"]]['default'])) {
-            return intval($days_by_location[$location["country"]]['default']);
+        $days_by_location = get_option('_edw_location_rules', []);
+        if (!is_array($days_by_location) || empty($days_by_location)) {
+            return edw_get_default_delivery_rule();
         }
 
-        // Fallback final
-        return intval(get_option('_edw_days', 0));
+        $location = edw_get_customer_location();
+        $country = $location['country'];
+        $state = $location['state'];
+
+        if (!$country) {
+            return edw_get_default_delivery_rule();
+        }
+
+        if (isset($days_by_location[$country])) {
+            if ($state && isset($days_by_location[$country][$state])) {
+                $rule = edw_normalize_delivery_rule($days_by_location[$country][$state]);
+                if ($rule !== null) {
+                    return $rule;
+                }
+            }
+
+            if (isset($days_by_location[$country]['default'])) {
+                $rule = edw_normalize_delivery_rule($days_by_location[$country]['default']);
+                if ($rule !== null) {
+                    return $rule;
+                }
+            }
+        }
+
+        return edw_get_default_delivery_rule();
     }
 
 
