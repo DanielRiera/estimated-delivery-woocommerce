@@ -1,3 +1,10 @@
+= 2.0.0 =
+* New UI
+* Add support for Location based
+* Fix error with cache plugins
+* Custom message (Estimated, Guaranteed or Custom )
+* Support latest WP and Woo Versions.
+
 = 1.2.3 =
 * Fix PHP errors
 * Add support for backorders
